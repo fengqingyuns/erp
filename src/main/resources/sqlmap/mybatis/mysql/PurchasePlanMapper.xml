@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.PurchasePlanDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.PurchasePlan">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="plan_id" property="planId" jdbcType="VARCHAR"/>
+        <result column="plan_document_id" property="planDocumentId" jdbcType="VARCHAR"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="plan_status" property="planStatus" jdbcType="TINYINT"/>
+        <result column="purchase_type" property="purchaseType" jdbcType="TINYINT"/>
+        <result column="operator_id" property="operatorId" jdbcType="VARCHAR"/>
+        <result column="operator_name" property="operatorName" jdbcType="VARCHAR"/>
+        <result column="valid_status" property="validStatus" jdbcType="TINYINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="business_man_id" property="businessManId" jdbcType="VARCHAR"/>
+        <result column="business_man_name" property="businessManName" jdbcType="VARCHAR"/>
+        <result column="auditor_id" property="auditorId" jdbcType="VARCHAR"/>
+        <result column="auditor_name" property="auditorName" jdbcType="VARCHAR"/>
+        <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, plan_id, plan_document_id, brand_id, store_id, plan_status, purchase_type, operator_id, operator_name, valid_status, remark, business_man_id, business_man_name, auditor_id, auditor_name, audit_time, create_time,
+        update_time
+    </sql>
+    <select id="selectByPlanId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM purchase_plan
+        WHERE plan_id = #{planId,jdbcType=VARCHAR}
+    </select>
+    <select id="countAll" resultType="java.lang.Integer" parameterType="com.hanyun.scm.api.domain.request.purchase.plan.PurchasePlanQueryRequest">
+        SELECT count(1)
+        FROM purchase_plan
+        <where>
+            <if test="planId != null">
+                AND plan_id = #{planId,jdbcType=VARCHAR}
+            </if>
+            <if test="planDocumentId != null">
+                AND plan_document_id LIKE concat(#{planDocumentId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="planStatus != null">
+                AND plan_status = #{planStatus,jdbcType=TINYINT}
+            </if>
+            <if test="operatorId != null">
+                AND operator_id = #{operatorId,jdbcType=VARCHAR}
+            </if>
+            <if test="operatorName != null">
+                AND operator_name = #{operatorName,jdbcType=VARCHAR}
+            </if>
+            <if test="validStatus != null">
+                AND valid_status = #{validStatus,jdbcType=TINYINT}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="businessManId != null">
+                AND business_man_id = #{businessManId,jdbcType=VARCHAR}
+            </if>
+            <if test="businessManName != null">
+                AND business_man_name = #{businessManName,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorId != null">
+                AND auditor_id = #{auditorId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorName != null">
+                AND auditor_name = #{auditorName,jdbcType=VARCHAR}
+            </if>
+            <if test="auditTime != null">
+                AND audit_time = #{auditTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="queryBeginTime!=null and queryBeginTime!=''">
+                AND create_time <![CDATA[>=]]> #{queryBeginTime, jdbcType=VARCHAR}
+            </if>
+            <if test="queryEndTime!=null and queryEndTime!=''">
+                AND create_time <![CDATA[<=]]> #{queryEndTime, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <select id="select" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.request.purchase.plan.PurchasePlanQueryRequest">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM purchase_plan
+        <where>
+            <if test="planId != null">
+                AND plan_id = #{planId,jdbcType=VARCHAR}
+            </if>
+            <if test="planDocumentId != null">
+                AND plan_document_id LIKE concat(#{planDocumentId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="planStatus != null">
+                AND plan_status = #{planStatus,jdbcType=TINYINT}
+            </if>
+            <if test="operatorId != null">
+                AND operator_id = #{operatorId,jdbcType=VARCHAR}
+            </if>
+            <if test="operatorName != null">
+                AND operator_name = #{operatorName,jdbcType=VARCHAR}
+            </if>
+            <if test="validStatus != null">
+                AND valid_status = #{validStatus,jdbcType=TINYINT}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="businessManId != null">
+                AND business_man_id = #{businessManId,jdbcType=VARCHAR}
+            </if>
+            <if test="businessManName != null">
+                AND business_man_name = #{businessManName,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorId != null">
+                AND auditor_id = #{auditorId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorName != null">
+                AND auditor_name = #{auditorName,jdbcType=VARCHAR}
+            </if>
+            <if test="auditTime != null">
+                AND audit_time = #{auditTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="queryBeginTime!=null and queryBeginTime!=''">
+                AND create_time <![CDATA[>=]]> #{queryBeginTime, jdbcType=VARCHAR}
+            </if>
+            <if test="queryEndTime!=null and queryEndTime!=''">
+                AND create_time <![CDATA[<=]]> #{queryEndTime, jdbcType=VARCHAR}
+            </if>
+            <if test="ids != null">
+                AND plan_id IN (NULL
+                <foreach collection="ids" item="id">
+                    , #{id, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+        </where>
+        ORDER BY id DESC
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    <delete id="delete" parameterType="java.lang.String">
+        DELETE FROM purchase_plan
+        WHERE plan_id = #{planId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insertSelective" parameterType="com.hanyun.scm.api.domain.request.purchase.plan.PurchasePlanCreateRequest">
+        INSERT INTO purchase_plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="planId != null">
+                plan_id,
+            </if>
+            <if test="planDocumentId != null">
+                plan_document_id,
+            </if>
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="planStatus != null">
+                plan_status,
+            </if>
+            <if test="purchaseType != null">
+                purchase_type,
+            </if>
+            <if test="operatorId != null">
+                operator_id,
+            </if>
+            <if test="operatorName != null">
+                operator_name,
+            </if>
+            <if test="validStatus != null">
+                valid_status,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="businessManId != null">
+                business_man_id,
+            </if>
+            <if test="businessManName != null">
+                business_man_name,
+            </if>
+            <if test="auditorId != null">
+                auditor_id,
+            </if>
+            <if test="auditorName != null">
+                auditor_name,
+            </if>
+            <if test="auditTime != null">
+                audit_time,
+            </if>
+            create_time,
+            update_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="planId != null">
+                #{planId,jdbcType=VARCHAR},
+            </if>
+            <if test="planDocumentId != null">
+                #{planDocumentId,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="planStatus != null">
+                #{planStatus,jdbcType=TINYINT},
+            </if>
+            <if test="purchaseType != null">
+                #{purchaseType,jdbcType=TINYINT},
+            </if>
+            <if test="operatorId != null">
+                #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorName != null">
+                #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="validStatus != null">
+                #{validStatus,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="businessManId != null">
+                #{businessManId,jdbcType=VARCHAR},
+            </if>
+            <if test="businessManName != null">
+                #{businessManName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditTime != null">
+                #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            NOW(),
+            NOW()
+        </trim>
+    </insert>
+    <update id="updateByPurchasePlan" parameterType="com.hanyun.scm.api.domain.request.purchase.plan.PurchasePlanModifyRequest">
+        UPDATE purchase_plan
+        <set>
+            <if test="planStatus != null">
+                plan_status = #{planStatus,jdbcType=TINYINT},
+            </if>
+            <if test="purchaseType != null">
+                purchase_type = #{purchaseType,jdbcType=TINYINT},
+            </if>
+            <if test="operatorId != null">
+                operator_id = #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorName != null">
+                operator_name = #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="validStatus != null">
+                valid_status = #{validStatus,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="businessManId != null">
+                business_man_id = #{businessManId,jdbcType=VARCHAR},
+            </if>
+            <if test="businessManName != null">
+                business_man_name = #{businessManName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                auditor_name = #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditTime != null">
+                audit_time = #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            update_time = NOW()
+        </set>
+        WHERE plan_id = #{planId,jdbcType=VARCHAR}
+    </update>
+</mapper>

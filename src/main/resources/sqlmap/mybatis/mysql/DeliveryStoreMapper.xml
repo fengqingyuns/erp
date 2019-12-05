@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.DeliveryStoreDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.DeliveryStore">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="logistics_delivery_order_id" property="logisticsDeliveryOrderId" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="store_name" property="storeName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, logistics_delivery_order_id, store_id, store_name
+    </sql>
+    <select id="select" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.DeliveryStore">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM delivery_store
+        <where>
+            <if test="logisticsDeliveryOrderId != null">
+                AND logistics_delivery_order_id = #{logisticsDeliveryOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeName != null">
+                AND store_name = #{storeName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByOrderIdAndStoreId" parameterType="com.hanyun.scm.api.domain.DeliveryStore">
+        DELETE FROM delivery_store
+        WHERE logistics_delivery_order_id = #{logisticsDeliveryOrderId,jdbcType=VARCHAR} and store_id = #{storeId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.hanyun.scm.api.domain.DeliveryStore">
+        INSERT INTO delivery_store
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="logisticsDeliveryOrderId != null">
+                logistics_delivery_order_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="storeName != null">
+                store_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="logisticsDeliveryOrderId != null">
+                #{logisticsDeliveryOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeName != null">
+                #{storeName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

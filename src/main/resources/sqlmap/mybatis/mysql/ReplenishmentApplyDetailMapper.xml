@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.ReplenishmentApplyDetailDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.ReplenishmentApplyDetail">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="replenishment_detail_id" property="replenishmentDetailId" jdbcType="VARCHAR"/>
+        <result column="replenishment_id" property="replenishmentId" jdbcType="VARCHAR"/>
+        <result column="goods_id" property="goodsId" jdbcType="VARCHAR"/>
+        <result column="goods_code" property="goodsCode" jdbcType="VARCHAR"/>
+        <result column="goods_bar_code" property="goodsBarCode" jdbcType="VARCHAR"/>
+        <result column="goods_name" property="goodsName" jdbcType="VARCHAR"/>
+        <result column="unit_name" property="unitName" jdbcType="VARCHAR"/>
+        <result column="unit_id" property="unitId" jdbcType="VARCHAR"/>
+        <result column="goods_brand_name" property="goodsBrandName" jdbcType="VARCHAR"/>
+        <result column="goods_type_name" property="goodsTypeName" jdbcType="VARCHAR"/>
+        <result column="classify_id" property="classifyId" jdbcType="VARCHAR"/>
+        <result column="classify_name" property="classifyName" jdbcType="VARCHAR"/>
+        <result column="features" property="features" jdbcType="VARCHAR"/>
+        <result column="apply_num" property="applyNum" jdbcType="BIGINT"/>
+        <result column="yesterday_apply_num" property="yesterdayApplyNum" jdbcType="BIGINT"/>
+        <result column="yesterday_get_num" property="yesterdayGetNum" jdbcType="BIGINT"/>
+        <result column="yesterday_sales_num" property="yesterdaySalesNum" jdbcType="BIGINT"/>
+        <result column="yesterday_waste_num" property="yesterdayWasteNum" jdbcType="BIGINT"/>
+        <result column="to_store_id" property="toStoreId" jdbcType="VARCHAR"/>
+        <result column="to_store_name" property="toStoreName" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="replenishment_status" property="replenishmentStatus" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP"/>
+        <result column="unit_price" property="unitPrice" jdbcType="BIGINT"/>
+        <result column="stock_in_num" property="stockInNum" jdbcType="BIGINT"/>
+        <result column="distribute_num" property="distributeNum" jdbcType="BIGINT"/>
+        <result column="distributed_num" property="distributedNum" jdbcType="BIGINT"/>
+        <result column="delivery_num" property="deliveryNum" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, brand_id, store_id, replenishment_detail_id, replenishment_id, goods_id, goods_code, goods_bar_code, goods_name, unit_name, unit_id, goods_brand_name, goods_type_name, classify_id, classify_name, features, apply_num, delivery_num,
+        yesterday_apply_num, yesterday_get_num, yesterday_sales_num, yesterday_waste_num, to_store_id, to_store_name, remark, replenishment_status, create_time, update_time, audit_time, unit_price,stock_in_num,distribute_num,distributed_num
+    </sql>
+    <select id="selectByReplenishmentId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM replenishment_apply_detail
+        WHERE replenishment_id = #{replenishmentId,jdbcType=VARCHAR}
+    </select>
+    <select id="countAll" resultType="java.lang.Integer" parameterType="com.hanyun.scm.api.domain.ReplenishmentApplyDetail">
+        SELECT
+        COUNT(*)
+        FROM replenishment_apply_detail
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="replenishmentDetailId != null">
+                AND replenishment_detail_id = #{replenishmentDetailId,jdbcType=VARCHAR}
+            </if>
+            <if test="replenishmentId != null">
+                AND replenishment_id = #{replenishmentId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsCode != null">
+                AND goods_code LIKE concat(#{goodsCode,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code LIKE concat(#{goodsBarCode,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsName != null">
+                AND goods_name LIKE concat(#{goodsName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsBrandName != null">
+                AND goods_brand_name = #{goodsBrandName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsTypeName != null">
+                AND goods_type_name = #{goodsTypeName,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyId != null">
+                AND classify_id = #{classifyId,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyName != null">
+                AND classify_name = #{classifyName,jdbcType=VARCHAR}
+            </if>
+            <if test="features != null">
+                AND features = #{features,jdbcType=VARCHAR}
+            </if>
+            <if test="applyNum != null">
+                AND apply_num = #{applyNum,jdbcType=BIGINT}
+            </if>
+            <if test="yesterdayApplyNum != null">
+                AND yesterday_apply_num = #{yesterdayApplyNum,jdbcType=BIGINT}
+            </if>
+            <if test="yesterdayGetNum != null">
+                AND yesterday_get_num = #{yesterdayGetNum,jdbcType=BIGINT}
+            </if>
+            <if test="yesterdaySalesNum != null">
+                AND yesterday_sales_num = #{yesterdaySalesNum,jdbcType=BIGINT}
+            </if>
+            <if test="yesterdayWasteNum != null">
+                AND yesterday_waste_num = #{yesterdayWasteNum,jdbcType=BIGINT}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="stockInNum != null">
+                AND stock_in_num = #{stockInNum,jdbcType=BIGINT}
+            </if>
+            <if test="distributeNum != null">
+                AND distribute_num = #{distributeNum,jdbcType=BIGINT}
+            </if>
+            <if test="distributedNum != null">
+                AND distributed_num = #{distributedNum,jdbcType=BIGINT}
+            </if>
+            <if test="deliveryNum != null">
+                AND delivery_num = #{deliveryNum,jdbcType=BIGINT}
+            </if>
+            <if test="startTime != null and startTime !=''">
+                AND create_time <![CDATA[>=]]> #{startTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null and endTime !=''">
+                AND create_time <![CDATA[<=]]> #{endTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="condition != null">
+                AND (goods_bar_code LIKE concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_name LIKE concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_code LIKE concat(#{condition,jdbcType=VARCHAR}, '%')
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.ReplenishmentApplyDetail">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM replenishment_apply_detail
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="replenishmentDetailId != null">
+                AND replenishment_detail_id = #{replenishmentDetailId,jdbcType=VARCHAR}
+            </if>
+            <if test="replenishmentId != null">
+                AND replenishment_id = #{replenishmentId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsCode != null">
+                AND goods_code LIKE concat(#{goodsCode,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code LIKE concat(#{goodsBarCode,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsName != null">
+                AND goods_name LIKE concat(#{goodsName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsBrandName != null">
+                AND goods_brand_name = #{goodsBrandName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsTypeName != null">
+                AND goods_type_name = #{goodsTypeName,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyId != null">
+                AND classify_id = #{classifyId,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyName != null">
+                AND classify_name = #{classifyName,jdbcType=VARCHAR}
+            </if>
+            <if test="features != null">
+                AND features = #{features,jdbcType=VARCHAR}
+            </if>
+            <if test="applyNum != null">
+                AND apply_num = #{applyNum,jdbcType=BIGINT}
+            </if>
+            <if test="yesterdayApplyNum != null">
+                AND yesterday_apply_num = #{yesterdayApplyNum,jdbcType=BIGINT}
+            </if>
+            <if test="yesterdayGetNum != null">
+                AND yesterday_get_num = #{yesterdayGetNum,jdbcType=BIGINT}
+            </if>
+            <if test="yesterdaySalesNum != null">
+                AND yesterday_sales_num = #{yesterdaySalesNum,jdbcType=BIGINT}
+            </if>
+            <if test="yesterdayWasteNum != null">
+                AND yesterday_waste_num = #{yesterdayWasteNum,jdbcType=BIGINT}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="stockInNum != null">
+                AND stock_in_num = #{stockInNum,jdbcType=BIGINT}
+            </if>
+            <if test="distributeNum != null">
+                AND distribute_num = #{distributeNum,jdbcType=BIGINT}
+            </if>
+            <if test="distributedNum != null">
+                AND distributed_num = #{distributedNum,jdbcType=BIGINT}
+            </if>
+            <if test="deliveryNum != null">
+                AND delivery_num = #{deliveryNum,jdbcType=BIGINT}
+            </if>
+            <if test="startTime != null and startTime !=''">
+                AND create_time <![CDATA[>=]]> #{startTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null and endTime !=''">
+                AND create_time <![CDATA[<=]]> #{endTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="condition != null">
+                AND (goods_bar_code LIKE concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_name LIKE concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_code LIKE concat(#{condition,jdbcType=VARCHAR}, '%')
+                )
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="selectGoodsIdsForAggregate" resultType="java.lang.String" parameterType="com.hanyun.scm.api.domain.request.aggregate.AggregateDistributionRequest">
+        SELECT goods_id
+        FROM replenishment_apply_detail
+        <where>
+            AND replenishment_id IN (NULL
+            <foreach collection="applyIds" item="applyId">
+                , #{applyId, jdbcType=VARCHAR}
+            </foreach>
+            )
+            <if test="editStatus != 1">
+                AND apply_num > distribute_num
+            </if>
+        </where>
+        GROUP BY goods_id
+    </select>
+    <select id="selectListForAggregate" resultType="com.hanyun.scm.api.domain.ReplenishmentApplyDetail" parameterType="com.hanyun.scm.api.domain.request.aggregate.AggregateDistributionRequest">
+        SELECT goods_id goodsId,
+        goods_name goodsName,
+        goods_code goodsCode,
+        goods_bar_code goodsBarCode,
+        to_store_id toStoreId,
+        to_store_name toStoreName,
+        unit_name unitName,
+        features features,
+        unit_price unitPrice,
+        (sum(apply_num - distribute_num)) applyNum
+        FROM replenishment_apply_detail
+        <where>
+            AND goods_id IN (NULL
+            <foreach collection="goodsIds" item="goodsId">
+                , #{goodsId, jdbcType=VARCHAR}
+            </foreach>
+            )
+            AND replenishment_id IN (NULL
+            <foreach collection="applyIds" item="applyId">
+                , #{applyId, jdbcType=VARCHAR}
+            </foreach>
+            )
+            <if test="editStatus != 1">
+                AND apply_num > distribute_num
+            </if>
+        </where>
+        GROUP BY goods_id,
+        goods_name,
+        goods_code,
+        goods_bar_code,
+        to_store_id,
+        to_store_name,
+        unit_name,
+        features,
+        unit_price
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        DELETE FROM replenishment_apply_detail
+        WHERE goods_id = #{goodsId,jdbcType=VARCHAR} AND replenishment_id = #{replenishmentId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insertSelective" parameterType="com.hanyun.scm.api.domain.ReplenishmentApplyDetail">
+        INSERT INTO replenishment_apply_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="replenishmentDetailId != null">
+                replenishment_detail_id,
+            </if>
+            <if test="replenishmentId != null">
+                replenishment_id,
+            </if>
+            <if test="goodsId != null">
+                goods_id,
+            </if>
+            <if test="goodsCode != null">
+                goods_code,
+            </if>
+            <if test="goodsBarCode != null">
+                goods_bar_code,
+            </if>
+            <if test="goodsName != null">
+                goods_name,
+            </if>
+            <if test="unitName != null">
+                unit_name,
+            </if>
+            <if test="unitId != null">
+                unit_id,
+            </if>
+            <if test="goodsBrandName != null">
+                goods_brand_name,
+            </if>
+            <if test="goodsTypeName != null">
+                goods_type_name,
+            </if>
+            <if test="classifyId != null">
+                classify_id,
+            </if>
+            <if test="classifyName != null">
+                classify_name,
+            </if>
+            <if test="features != null">
+                features,
+            </if>
+            <if test="applyNum != null">
+                apply_num,
+            </if>
+            <if test="yesterdayApplyNum != null">
+                yesterday_apply_num,
+            </if>
+            <if test="yesterdayGetNum != null">
+                yesterday_get_num,
+            </if>
+            <if test="yesterdaySalesNum != null">
+                yesterday_sales_num,
+            </if>
+            <if test="yesterdayWasteNum != null">
+                yesterday_waste_num,
+            </if>
+            <if test="toStoreId != null">
+                to_store_id,
+            </if>
+            <if test="toStoreName != null">
+                to_store_name,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="unitPrice != null">
+                unit_price,
+            </if>
+            <if test="auditTime != null">
+                audit_time,
+            </if>
+            delivery_num,
+            stock_in_num,
+            distribute_num,
+            distributed_num,
+            create_time,
+            update_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                #{brandId, jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                #{storeId, jdbcType=VARCHAR},
+            </if>
+            <if test="replenishmentDetailId != null">
+                #{replenishmentDetailId,jdbcType=VARCHAR},
+            </if>
+            <if test="replenishmentId != null">
+                #{replenishmentId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsId != null">
+                #{goodsId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBarCode != null">
+                #{goodsBarCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null">
+                #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitId != null">
+                #{unitId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBrandName != null">
+                #{goodsBrandName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsTypeName != null">
+                #{goodsTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyId != null">
+                #{classifyId,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyName != null">
+                #{classifyName,jdbcType=VARCHAR},
+            </if>
+            <if test="features != null">
+                #{features,jdbcType=VARCHAR},
+            </if>
+            <if test="applyNum != null">
+                #{applyNum,jdbcType=BIGINT},
+            </if>
+            <if test="yesterdayApplyNum != null">
+                #{yesterdayApplyNum,jdbcType=BIGINT},
+            </if>
+            <if test="yesterdayGetNum != null">
+                #{yesterdayGetNum,jdbcType=BIGINT},
+            </if>
+            <if test="yesterdaySalesNum != null">
+                #{yesterdaySalesNum,jdbcType=BIGINT},
+            </if>
+            <if test="yesterdayWasteNum != null">
+                #{yesterdayWasteNum,jdbcType=BIGINT},
+            </if>
+            <if test="toStoreId != null">
+                #{toStoreId, jdbcType=VARCHAR},
+            </if>
+            <if test="toStoreName != null">
+                #{toStoreName, jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                #{unitPrice,jdbcType=BIGINT},
+            </if>
+            <if test="auditTime != null">
+                #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            0,
+            0,
+            0,
+            0,
+            NOW(),
+            NOW()
+        </trim>
+    </insert>
+    <update id="updateByReplenishmentId" parameterType="com.hanyun.scm.api.domain.ReplenishmentApplyDetail">
+        UPDATE replenishment_apply_detail
+        <set>
+            <if test="goodsCode != null">
+                goods_code = #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBarCode != null">
+                goods_bar_code = #{goodsBarCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                goods_name = #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null">
+                unit_name = #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitId != null">
+                unit_id = #{unitId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBrandName != null">
+                goods_brand_name = #{goodsBrandName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsTypeName != null">
+                goods_type_name = #{goodsTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyId != null">
+                classify_id = #{classifyId,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyName != null">
+                classify_name = #{classifyName,jdbcType=VARCHAR},
+            </if>
+            <if test="features != null">
+                features = #{features,jdbcType=VARCHAR},
+            </if>
+            <if test="applyNum != null">
+                apply_num = #{applyNum,jdbcType=BIGINT},
+            </if>
+            <if test="yesterdayApplyNum != null">
+                yesterday_apply_num = #{yesterdayApplyNum,jdbcType=BIGINT},
+            </if>
+            <if test="yesterdayGetNum != null">
+                yesterday_get_num = #{yesterdayGetNum,jdbcType=BIGINT},
+            </if>
+            <if test="yesterdaySalesNum != null">
+                yesterday_sales_num = #{yesterdaySalesNum,jdbcType=BIGINT},
+            </if>
+            <if test="yesterdayWasteNum != null">
+                yesterday_waste_num = #{yesterdayWasteNum,jdbcType=BIGINT},
+            </if>
+            <if test="toStoreId != null">
+                to_store_id = #{toStoreId, jdbcType=VARCHAR},
+            </if>
+            <if test="toStoreName != null">
+                to_store_name = #{toStoreName, jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = NOW(),
+            </if>
+            <if test="auditTime != null">
+                audit_time = #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice,jdbcType=BIGINT},
+            </if>
+            <if test="replenishmentStatus != null">
+                replenishment_status = #{replenishmentStatus, jdbcType=TINYINT},
+            </if>
+            <if test="stockInNum != null">
+                stock_in_num = #{stockInNum,jdbcType=BIGINT},
+            </if>
+            <if test="distributeNum != null">
+                distribute_num = #{distributeNum,jdbcType=BIGINT},
+            </if>
+            <if test="distributedNum != null">
+                distributed_num = #{distributedNum,jdbcType=BIGINT},
+            </if>
+            <if test="deliveryNum != null">
+                delivery_num = #{deliveryNum,jdbcType=BIGINT},
+            </if>
+        </set>
+        <where>
+            <if test="goodsId != null">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            AND replenishment_id = #{replenishmentId,jdbcType=VARCHAR}
+        </where>
+    </update>
+    <select id="statisticsApplyNum" parameterType="com.hanyun.scm.api.domain.request.aggregate.AggregateStatisticsRequest" resultType="com.hanyun.scm.api.domain.response.aggregate.AggregateStatisticsResponse">
+        SELECT goods_id goodsId, to_store_id toStoreId, SUM(apply_num) applyNum,SUM(stock_in_num) stockInNum
+        FROM replenishment_apply_detail
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId, jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND to_store_id = #{storeId, jdbcType=VARCHAR}
+            </if>
+            <if test="beginTime != null">
+                AND audit_time <![CDATA[>=]]> #{beginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                AND audit_time <![CDATA[<=]]> #{endTime, jdbcType=TIMESTAMP}
+            </if>
+            AND replenishment_status = 3
+        </where>
+        GROUP BY goods_id, to_store_id
+    </select>
+
+    <update id="aduitDetail" parameterType="java.lang.String">
+        UPDATE replenishment_apply_detail
+        <set>
+            update_time = NOW(),
+            audit_time =  NOW(),
+            replenishment_status = 3,
+        </set>
+        <where>
+            replenishment_id = #{replenishmentId,jdbcType=VARCHAR}
+        </where>
+    </update>
+
+    <select id="queryBrandApplyNum" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT brand_id brandId, SUM(apply_num) applyNum, goods_id goodsId, goods_code goodsCode, goods_bar_code goodsBarCode, goods_name goodsName
+        FROM replenishment_apply_detail
+        <where>
+            AND replenishment_id in(NULL
+            <foreach collection="ids" item="id">
+                ,#{id, jdbcType=VARCHAR}
+            </foreach>
+            )
+            AND(
+            store_id is NULL
+            OR store_id = ''
+            )
+        </where>
+        GROUP BY brand_id,goods_id
+    </select>
+
+    <select id="queryStoreApplyNum" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT brand_id brandId, store_id storeId, SUM(apply_num) applyNum, goods_id goodsId, goods_code goodsCode, goods_bar_code goodsBarCode, goods_name goodsName
+        FROM replenishment_apply_detail
+        <where>
+            AND replenishment_id in(NULL
+            <foreach collection="ids" item="id">
+                ,#{id, jdbcType=VARCHAR}
+            </foreach>
+            )
+            AND(
+            store_id is NOT NULL
+            OR store_id != ''
+            )
+        </where>
+        GROUP BY brand_id, store_id,goods_id
+    </select>
+</mapper>

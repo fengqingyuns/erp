@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.PurchaseApplyGoodsDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.PurchaseApplyGoods">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="apply_goods_id" property="applyGoodsId" jdbcType="VARCHAR"/>
+        <result column="apply_id" property="applyId" jdbcType="VARCHAR"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="goods_id" property="goodsId" jdbcType="VARCHAR"/>
+        <result column="goods_bar_code" property="goodsBarCode" jdbcType="VARCHAR"/>
+        <result column="goods_code" property="goodsCode" jdbcType="VARCHAR"/>
+        <result column="odoo_goods_id" property="odooGoodsId" jdbcType="INTEGER"/>
+        <result column="goods_name" property="goodsName" jdbcType="VARCHAR"/>
+        <result column="classify_id" property="classifyId" jdbcType="VARCHAR"/>
+        <result column="classify_name" property="classifyName" jdbcType="VARCHAR"/>
+        <result column="goods_type" property="goodsType" jdbcType="TINYINT"/>
+        <result column="goods_type_name" property="goodsTypeName" jdbcType="VARCHAR"/>
+        <result column="goods_brand_name" property="goodsBrandName" jdbcType="VARCHAR"/>
+        <result column="unit_id" property="unitId" jdbcType="VARCHAR"/>
+        <result column="unit_name" property="unitName" jdbcType="VARCHAR"/>
+        <result column="features" property="features" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="apply_amount" property="applyAmount" jdbcType="BIGINT"/>
+        <result column="stock" property="stock" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, apply_goods_id, apply_id, brand_id, store_id, goods_id, goods_bar_code, goods_code, odoo_goods_id,
+        goods_name, classify_id, classify_name, goods_type, goods_type_name, goods_brand_name, unit_id, unit_name,
+        features, apply_amount, stock, remark, create_time, update_time
+    </sql>
+    
+    <!--     分页查询 -->
+    <select id="select" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.PurchaseApplyGoods">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM purchase_apply_goods
+        <where>
+            <if test="applyGoodsId != null">
+                AND apply_goods_id = #{applyGoodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="applyId != null">
+                AND apply_id = #{applyId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="odooGoodsId != null">
+                AND odoo_goods_id = #{odooGoodsId,jdbcType=INTEGER}
+            </if>
+            <if test="goodsName != null">
+                AND goods_name = #{goodsName,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyId != null">
+                AND classify_id = #{classifyId,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyName != null">
+                AND classify_name = #{classifyName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsType != null">
+                AND goods_type = #{goodsType,jdbcType=TINYINT}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="applyAmount != null">
+                AND apply_amount = #{applyAmount,jdbcType=BIGINT}
+            </if>
+            <if test="stock != null">
+                AND stock = #{stock,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+	<!--     查总条数 -->
+    <select id="countAll" parameterType="com.hanyun.scm.api.domain.PurchaseApplyGoods" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM purchase_apply_goods
+        <where>
+            <if test="applyGoodsId != null">
+                AND apply_goods_id = #{applyGoodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="applyId != null">
+                AND apply_id = #{applyId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="odooGoodsId != null">
+                AND odoo_goods_id = #{odooGoodsId,jdbcType=INTEGER}
+            </if>
+            <if test="goodsName != null">
+                AND goods_name = #{goodsName,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyId != null">
+                AND classify_id = #{classifyId,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyName != null">
+                AND classify_name = #{classifyName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsType != null">
+                AND goods_type = #{goodsType,jdbcType=TINYINT}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="applyAmount != null">
+                AND apply_amount = #{applyAmount,jdbcType=BIGINT}
+            </if>
+            <if test="stock != null">
+                AND stock = #{stock,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+    <select id="selectByApplyId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM purchase_apply_goods
+        WHERE apply_id = #{applyId, jdbcType=VARCHAR}
+    </select>
+    <select id="selectByApplyGoodsId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM purchase_apply_goods
+        WHERE apply_goods_id = #{applyGoodsId, jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByApplyGoodsId" parameterType="java.lang.String">
+        DELETE FROM purchase_apply_goods
+        WHERE apply_goods_id = #{applyGoodsId,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByApplyId" parameterType="java.lang.String">
+        DELETE FROM purchase_apply_goods
+        WHERE apply_id = #{applyId, jdbcType=VARCHAR}
+    </delete>
+    <insert id="insertSelective" parameterType="com.hanyun.scm.api.domain.PurchaseApplyGoods">
+        INSERT INTO purchase_apply_goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="applyGoodsId != null">
+                apply_goods_id,
+            </if>
+            <if test="applyId != null">
+                apply_id,
+            </if>
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="goodsBarCode != null">
+                goods_bar_code,
+            </if>
+            <if test="goodsCode != null">
+                goods_code,
+            </if>
+            <if test="goodsId != null">
+                goods_id,
+            </if>
+            <if test="odooGoodsId != null">
+                odoo_goods_id,
+            </if>
+            <if test="goodsName != null">
+                goods_name,
+            </if>
+            <if test="classifyId != null">
+                classify_id,
+            </if>
+            <if test="classifyName != null">
+                classify_name,
+            </if>
+            <if test="goodsType != null">
+                goods_type,
+            </if>
+            <if test="goodsTypeName != null">
+                goods_type_name,
+            </if>
+            <if test="goodsBrandName != null">
+                goods_brand_name,
+            </if>
+            <if test="unitId != null">
+                unit_id,
+            </if>
+            <if test="unitName != null">
+                unit_name,
+            </if>
+            <if test="features != null">
+                features,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="applyAmount != null">
+                apply_amount,
+            </if>
+            <if test="stock != null">
+                stock,
+            </if>
+                create_time,
+                update_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="applyGoodsId != null">
+                #{applyGoodsId,jdbcType=VARCHAR},
+            </if>
+            <if test="applyId != null">
+                #{applyId,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBarCode != null">
+                #{goodsBarCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsId != null">
+                #{goodsId,jdbcType=VARCHAR},
+            </if>
+            <if test="odooGoodsId != null">
+                #{odooGoodsId,jdbcType=INTEGER},
+            </if>
+            <if test="goodsName != null">
+                #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyId != null">
+                #{classifyId,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyName != null">
+                #{classifyName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsType != null">
+                #{goodsType,jdbcType=TINYINT},
+            </if>
+            <if test="goodsTypeName != null">
+                #{goodsTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBrandName != null">
+                #{goodsBrandName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitId != null">
+                #{unitId,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null">
+                #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="features != null">
+                #{features,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="applyAmount != null">
+                #{applyAmount,jdbcType=BIGINT},
+            </if>
+            <if test="stock != null">
+                #{stock,jdbcType=BIGINT},
+            </if>
+            NOW(),
+            NOW()
+        </trim>
+    </insert>
+    <update id="updateByPurchaseApply" parameterType="com.hanyun.scm.api.domain.PurchaseApplyGoods">
+        UPDATE purchase_apply_goods
+        <set>
+            <if test="applyGoodsId != null">
+                apply_goods_id = #{applyGoodsId,jdbcType=VARCHAR},
+            </if>
+            <if test="validStatus != null">
+                valid_status = #{validStatus,jdbcType=TINYINT},
+            </if>
+            <if test="applyId != null">
+                apply_id = #{applyId,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsId != null">
+                goods_id = #{goodsId,jdbcType=VARCHAR},
+            </if>
+            <if test="odooGoodsId != null">
+                odoo_goods_id = #{odooGoodsId,jdbcType=INTEGER},
+            </if>
+            <if test="goodsName != null">
+                goods_name = #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyId != null">
+                classify_id = #{classifyId,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyName != null">
+                classify_name = #{classifyName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsType != null">
+                goods_type = #{goodsType,jdbcType=TINYINT},
+            </if>
+            <if test="goodsTypeName != null">
+                goods_type_name = #{goodsTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBrandName != null">
+                goods_brand_name = #{goodsBrandName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitId != null">
+                unit_id = #{unitId,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null">
+                unit_name = #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="applyAmount != null">
+                apply_amount = #{applyAmount,jdbcType=BIGINT},
+            </if>
+            <if test="stock != null">
+                stock = #{stock,jdbcType=BIGINT},
+            </if>
+            update_time = NOW()
+        </set>
+        WHERE goods_id = #{goodsId,jdbcType=VARCHAR}
+        <if test="applyId != null">
+            AND apply_id = #{applyId,jdbcType=VARCHAR}
+        </if>
+    </update>
+</mapper>

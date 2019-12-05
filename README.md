@@ -1,0 +1,73 @@
+#erp-api
+
+## 数据格式如下
+```
+{
+    "messageType":"STOCK_ORDER",
+    "brandId":"AD7F2B3EE5339D4A65986EF2D15C2CE2F0",
+    "storeId":"AHD2CC6BF68F1248C4BF7584DA901E8DEB",
+    "orderId":"dfeb3d5c2d344d94a36f1d998b2fa86e",
+    "orderShowId":"CR20170619190824",
+    "srcOrderId":"10244d0acfd54630bd4ab5cd31c50fd2",
+    "srcOrderShowId":"CD20170619190824",
+    "toWarehouseId":"843ccfe574f44b00aaaa301883ba749c",
+    "toWarehouseName":"来跑吧跑步服务站（长沙贺龙体育场店",
+    "supplierId":"1",
+    "supplierName":"亚瑟士(中国)商贸有限公司",
+    "orderType":0,
+    "testFlag":1,
+    "stockInDetailList":[]
+}
+```
+<table>
+    <thead>
+        <tr><th>字段名</th><th>必须</th><th>类型</th><th>描述</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>messageType</td><td>是</td><td>String</td><td>消息类型,"STOCK_ORDER"表示库存相关订单</td></tr>
+        <tr><td>orderType</td><td>是</td><td>String</td><td>订单类型</td></tr>
+        <tr><td>testFlag</td><td>否</td><td>String</td><td>1为测试数据</td></tr>
+        <tr><td>brandId</td><td>是</td><td>String</td><td>品牌id</td></tr>
+        <tr><td>storeId</td><td>否</td><td>String</td><td>门店id</td></tr>
+        <tr><td>orderId</td><td>是</td><td>String</td><td>订单id</td></tr>
+        <tr><td>orderShowId</td><td>是</td><td>String</td><td>订单号</td></tr>
+        <tr><td>srcOrderId</td><td>否</td><td>String</td><td>来源订单id</td></tr>
+        <tr><td>srcOrderDocumentId</td><td>否</td><td>String</td><td>来源订单号</td></tr>
+        <tr><td>toWarehouseId</td><td>否</td><td>String</td><td>入库仓库id</td></tr>
+        <tr><td>toWarehouseName</td><td>否</td><td>String</td><td>入库仓库名称</td></tr>
+        <tr><td>srcWarehouseId</td><td>否</td><td>String</td><td>入库仓库id</td></tr>
+        <tr><td>srcWarehouseName</td><td>否</td><td>String</td><td>入库仓库名称</td></tr>
+        <tr><td>supplierId</td><td>否</td><td>String</td><td>供应商id</td></tr>
+        <tr><td>supplierName</td><td>否</td><td>String</td><td>供应商姓名</td></tr>
+        <tr><td>stockInDetailList</td><td>否</td><td>Array</td><td>入库商品列表</td></tr>
+        <tr><td>stockOutDetailList</td><td>否</td><td>Array</td><td>出库商品列表</td></tr>
+    </tbody>
+</table>
+
+### 出入库商品列表
+```
+[{
+    "goodsId":"2247",
+    "goodsName":"SAUCONY-FREEDOM-ISO-17春夏（红940.5）",
+    "barCode":"11055627",
+    "skuCode":"11055627",
+    "classifyId":"3",
+    "classifyName":"鞋",
+    "unit":"",
+    "features":"",
+    "price":62954,
+    "amount":1,
+    "createTime":"2017-06-19 19:08:24",
+    "updateTime":"2017-06-19 19:08:24"
+}]
+```
+<table>
+    <thead>
+        <tr><th>字段名</th><th>必须</th><th>类型</th><th>描述</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>goodsId</td><td>是</td><td>String</td><td>商品id</td></tr>
+        <tr><td>goodsName</td><td>是</td><td>String</td><td>商品名称</td></tr>
+        <tr><td>channel</td><td>是</td><td>Integer</td><td>客户端类型:0为管理后台,1为poss机,2为收银台,3为汉云微信公众号</td></tr>
+    </tbody>
+</table>

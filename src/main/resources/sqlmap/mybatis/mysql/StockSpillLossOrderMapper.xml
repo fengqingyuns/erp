@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.StockSpillLossOrderDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.StockSpillLossOrder">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="stock_variance_id" property="stockVarianceId" jdbcType="VARCHAR"/>
+        <result column="stock_variance_document_id" property="stockVarianceDocumentId" jdbcType="VARCHAR"/>
+        <result column="stock_check_difference_id" property="stockCheckDifferenceId" jdbcType="VARCHAR"/>
+        <result column="stock_check_difference_document_id" property="stockCheckDifferenceDocumentId" jdbcType="VARCHAR"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="stock_variance_type" property="stockVarianceType" jdbcType="TINYINT"/>
+        <result column="stock_variance_status" property="stockVarianceStatus" jdbcType="TINYINT"/>
+        <result column="spill_over_reason" property="spillOverReason" jdbcType="TINYINT"/>
+        <result column="loss_reason" property="lossReason" jdbcType="TINYINT"/>
+        <result column="difference_num" property="differenceNum" jdbcType="BIGINT"/>
+        <result column="difference_price" property="differencePrice" jdbcType="BIGINT"/>
+        <result column="warehouse_id" property="warehouseId" jdbcType="VARCHAR"/>
+        <result column="warehouse_name" property="warehouseName" jdbcType="VARCHAR"/>
+        <result column="operator_id" property="operatorId" jdbcType="VARCHAR"/>
+        <result column="operator_name" property="operatorName" jdbcType="VARCHAR"/>
+        <result column="auditor_id" property="auditorId" jdbcType="VARCHAR"/>
+        <result column="auditor_name" property="auditorName" jdbcType="VARCHAR"/>
+        <result column="auditor_time" property="auditorTime" jdbcType="TIMESTAMP"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="business_man_id" property="businessManId" jdbcType="VARCHAR"/>
+        <result column="business_man_name" property="businessManName" jdbcType="VARCHAR"/>
+        <result column="valid_status" property="validStatus" jdbcType="TINYINT"/>
+        <result column="yeoperation_time" property="yeoperationTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, stock_variance_id, stock_variance_document_id, stock_check_difference_id, stock_check_difference_document_id, brand_id, store_id, stock_variance_type, stock_variance_status, spill_over_reason, loss_reason, 
+        difference_num, difference_price, warehouse_id, warehouse_name, operator_id, operator_name, auditor_id, auditor_name, auditor_time, remark, business_man_id, business_man_name, valid_status, yeoperation_time, 
+        create_time, update_time
+    </sql>
+    <select id="selectByVarianceId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM stock_spill_loss_order
+        WHERE stock_variance_id = #{id, jdbcType=VARCHAR}
+    </select>
+    <select id="select" resultMap="BaseResultMap"
+            parameterType="com.hanyun.scm.api.domain.request.stock.StockSpillLossOrderRequest">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM stock_spill_loss_order
+        <where>
+            <if test="stockVarianceId != null">
+                AND stock_variance_id = #{stockVarianceId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockVarianceDocumentId != null">
+                AND stock_variance_document_id LIKE concat('%',#{stockVarianceDocumentId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="stockCheckDifferenceId != null">
+                AND stock_check_difference_id = #{stockCheckDifferenceId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockCheckDifferenceDocumentId != null">
+                AND stock_check_difference_document_id = #{stockCheckDifferenceDocumentId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockVarianceType != null">
+                AND stock_variance_type = #{stockVarianceType,jdbcType=TINYINT}
+            </if>
+            <if test="stockVarianceStatus != null">
+                AND stock_variance_status = #{stockVarianceStatus,jdbcType=TINYINT}
+            </if>
+            <if test="spillOverReason != null">
+                AND spill_over_reason = #{spillOverReason,jdbcType=TINYINT}
+            </if>
+            <if test="lossReason != null">
+                AND loss_reason = #{lossReason,jdbcType=TINYINT}
+            </if>
+            <if test="differenceNum != null">
+                AND difference_num = #{differenceNum,jdbcType=BIGINT}
+            </if>
+            <if test="differencePrice != null">
+                AND difference_price = #{differencePrice,jdbcType=BIGINT}
+            </if>
+            <if test="warehouseId != null">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseName != null">
+                AND warehouse_name = #{warehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="operatorId != null">
+                AND operator_id = #{operatorId,jdbcType=VARCHAR}
+            </if>
+            <if test="operatorName != null">
+                AND operator_name LIKE concat('%',#{operatorName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="auditorId != null">
+                AND auditor_id = #{auditorId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorName != null">
+                AND auditor_name LIKE concat('%',#{auditorName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="auditorTime != null">
+                AND auditor_time = #{auditorTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="businessManId != null">
+                AND business_man_id = #{businessManId,jdbcType=VARCHAR}
+            </if>
+            <if test="businessManName != null">
+                AND business_man_name = #{businessManName,jdbcType=VARCHAR}
+            </if>
+            <if test="validStatus != null">
+                AND valid_status = #{validStatus,jdbcType=TINYINT}
+            </if>
+            <if test="yeoperationTime != null">
+                AND yeoperation_time = #{yeoperationTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="beginTime != null">
+                AND create_time <![CDATA[>=]]> #{beginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                AND create_time <![CDATA[<=]]> #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="queryUpdateTime != null">
+                AND update_time = #{queryUpdateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="ids != null">
+                AND stock_variance_id IN (NULL
+                <foreach collection="ids" item="id">
+                    , #{id, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            AND valid_status =0
+        </where>
+        ORDER BY update_time DESC
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="countAll" resultType="Integer"
+            parameterType="com.hanyun.scm.api.domain.request.stock.StockSpillLossOrderRequest">
+        SELECT
+        COUNT(*)
+        FROM stock_spill_loss_order
+        <where>
+            <if test="stockVarianceId != null">
+                AND stock_variance_id = #{stockVarianceId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockVarianceDocumentId != null">
+                AND stock_variance_document_id LIKE concat('%',#{stockVarianceDocumentId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="stockCheckDifferenceId != null">
+                AND stock_check_difference_id = #{stockCheckDifferenceId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockCheckDifferenceDocumentId != null">
+                AND stock_check_difference_document_id = #{stockCheckDifferenceDocumentId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockVarianceType != null">
+                AND stock_variance_type = #{stockVarianceType,jdbcType=TINYINT}
+            </if>
+            <if test="stockVarianceStatus != null">
+                AND stock_variance_status = #{stockVarianceStatus,jdbcType=TINYINT}
+            </if>
+            <if test="spillOverReason != null">
+                AND spill_over_reason = #{spillOverReason,jdbcType=TINYINT}
+            </if>
+            <if test="lossReason != null">
+                AND loss_reason = #{lossReason,jdbcType=TINYINT}
+            </if>
+            <if test="differenceNum != null">
+                AND difference_num = #{differenceNum,jdbcType=BIGINT}
+            </if>
+            <if test="differencePrice != null">
+                AND difference_price = #{differencePrice,jdbcType=BIGINT}
+            </if>
+            <if test="warehouseId != null">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseName != null">
+                AND warehouse_name = #{warehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="operatorId != null">
+                AND operator_id = #{operatorId,jdbcType=VARCHAR}
+            </if>
+            <if test="operatorName != null">
+                AND operator_name LIKE concat('%',#{operatorName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="auditorId != null">
+                AND auditor_id = #{auditorId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorName != null">
+                AND auditor_name LIKE concat('%',#{auditorName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="auditorTime != null">
+                AND auditor_time = #{auditorTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="businessManId != null">
+                AND business_man_id = #{businessManId,jdbcType=VARCHAR}
+            </if>
+            <if test="businessManName != null">
+                AND business_man_name = #{businessManName,jdbcType=VARCHAR}
+            </if>
+            <if test="validStatus != null">
+                AND valid_status = #{validStatus,jdbcType=TINYINT}
+            </if>
+            <if test="yeoperationTime != null">
+                AND yeoperation_time = #{yeoperationTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="beginTime != null">
+                AND create_time <![CDATA[>=]]> #{beginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                AND create_time <![CDATA[<=]]> #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="queryUpdateTime != null">
+                AND update_time = #{queryUpdateTime,jdbcType=TIMESTAMP}
+            </if>
+            AND valid_status =0
+        </where>
+        ORDER BY update_time DESC
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        DELETE FROM stock_spill_loss_order
+        WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insertSelective" parameterType="com.hanyun.scm.api.domain.StockSpillLossOrder">
+        INSERT INTO stock_spill_loss_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stockVarianceId != null">
+                stock_variance_id,
+            </if>
+            <if test="stockVarianceDocumentId != null">
+                stock_variance_document_id,
+            </if>
+            <if test="stockCheckDifferenceId != null">
+                stock_check_difference_id,
+            </if>
+            <if test="stockCheckDifferenceDocumentId != null">
+                stock_check_difference_document_id,
+            </if>
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="stockVarianceType != null">
+                stock_variance_type,
+            </if>
+            <if test="stockVarianceStatus != null">
+                stock_variance_status,
+            </if>
+            <if test="spillOverReason != null">
+                spill_over_reason,
+            </if>
+            <if test="lossReason != null">
+                loss_reason,
+            </if>
+            <if test="differenceNum != null">
+                difference_num,
+            </if>
+            <if test="differencePrice != null">
+                difference_price,
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id,
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name,
+            </if>
+            <if test="operatorId != null">
+                operator_id,
+            </if>
+            <if test="operatorName != null">
+                operator_name,
+            </if>
+            <if test="auditorId != null">
+                auditor_id,
+            </if>
+            <if test="auditorName != null">
+                auditor_name,
+            </if>
+            <if test="auditorTime != null">
+                auditor_time,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="businessManId != null">
+                business_man_id,
+            </if>
+            <if test="businessManName != null">
+                business_man_name,
+            </if>
+            <if test="validStatus != null">
+                valid_status,
+            </if>
+            <if test="yeoperationTime != null">
+                yeoperation_time,
+            </if>
+            <if test="differenceCreateLoss == 1">
+                yeoperation_time,
+                auditor_time,
+            </if>
+            create_time,
+            update_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stockVarianceId != null">
+                #{stockVarianceId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockVarianceDocumentId != null">
+                #{stockVarianceDocumentId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockCheckDifferenceId != null">
+                #{stockCheckDifferenceId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockCheckDifferenceDocumentId != null">
+                #{stockCheckDifferenceDocumentId,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockVarianceType != null">
+                #{stockVarianceType,jdbcType=TINYINT},
+            </if>
+            <if test="stockVarianceStatus != null">
+                #{stockVarianceStatus,jdbcType=TINYINT},
+            </if>
+            <if test="spillOverReason != null">
+                #{spillOverReason,jdbcType=TINYINT},
+            </if>
+            <if test="lossReason != null">
+                #{lossReason,jdbcType=TINYINT},
+            </if>
+            <if test="differenceNum != null">
+                #{differenceNum,jdbcType=BIGINT},
+            </if>
+            <if test="differencePrice != null">
+                #{differencePrice,jdbcType=BIGINT},
+            </if>
+            <if test="warehouseId != null">
+                #{warehouseId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorId != null">
+                #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorName != null">
+                #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorTime != null">
+                #{auditorTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="businessManId != null">
+                #{businessManId,jdbcType=VARCHAR},
+            </if>
+            <if test="businessManName != null">
+                #{businessManName,jdbcType=VARCHAR},
+            </if>
+            <if test="validStatus != null">
+                #{validStatus,jdbcType=TINYINT},
+            </if>
+            <if test="yeoperationTime != null">
+                #{yeoperationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="differenceCreateLoss == 1">
+                NOW(),
+                NOW(),
+            </if>
+            NOW(),
+            NOW(),
+        </trim>
+    </insert>
+    <update id="modifyOrder" parameterType="com.hanyun.scm.api.domain.StockSpillLossOrder">
+        UPDATE stock_spill_loss_order
+        <set>
+            <if test="stockVarianceStatus != null">
+                stock_variance_status = #{stockVarianceStatus,jdbcType=TINYINT},
+            </if>
+            <if test="spillOverReason != null">
+                spill_over_reason = #{spillOverReason,jdbcType=TINYINT},
+            </if>
+            <if test="lossReason != null">
+                loss_reason = #{lossReason,jdbcType=TINYINT},
+            </if>
+            <if test="differenceNum != null">
+                difference_num = #{differenceNum,jdbcType=BIGINT},
+            </if>
+            <if test="differencePrice != null">
+                difference_price = #{differencePrice,jdbcType=BIGINT},
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorId != null">
+                operator_id = #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorName != null">
+                operator_name = #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                auditor_name = #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorTime != null">
+                auditor_time = #{auditorTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="businessManId != null">
+                business_man_id = #{businessManId,jdbcType=VARCHAR},
+            </if>
+            <if test="businessManName != null">
+                business_man_name = #{businessManName,jdbcType=VARCHAR},
+            </if>
+            <if test="validStatus != null">
+                valid_status = #{validStatus,jdbcType=TINYINT},
+            </if>
+            <if test="yeoperationTime != null">
+                yeoperation_time = #{yeoperationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        WHERE stock_variance_id =#{stockVarianceId}
+    </update>
+    <update id="aduitOrder" parameterType="com.hanyun.scm.api.domain.StockSpillLossOrder">
+        UPDATE stock_spill_loss_order
+        <set>
+            <if test="stockVarianceStatus != null">
+                stock_variance_status = #{stockVarianceStatus,jdbcType=TINYINT},
+            </if>
+            <if test="spillOverReason != null">
+                spill_over_reason = #{spillOverReason,jdbcType=TINYINT},
+            </if>
+            <if test="lossReason != null">
+                loss_reason = #{lossReason,jdbcType=TINYINT},
+            </if>
+            <if test="differenceNum != null">
+                difference_num = #{differenceNum,jdbcType=BIGINT},
+            </if>
+            <if test="differencePrice != null">
+                difference_price = #{differencePrice,jdbcType=BIGINT},
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorId != null">
+                operator_id = #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorName != null">
+                operator_name = #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                auditor_name = #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="businessManId != null">
+                business_man_id = #{businessManId,jdbcType=VARCHAR},
+            </if>
+            <if test="businessManName != null">
+                business_man_name = #{businessManName,jdbcType=VARCHAR},
+            </if>
+            <if test="validStatus != null">
+                valid_status = #{validStatus,jdbcType=TINYINT},
+            </if>
+            <if test="yeoperationTime != null">
+                yeoperation_time = #{yeoperationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            update_time = NOW(),
+            auditor_time = NOW()
+        </set>
+        WHERE stock_variance_id =#{stockVarianceId}
+    </update>
+    <select id="selectScrapOrder" resultMap="BaseResultMap"
+            parameterType="com.hanyun.scm.api.domain.request.stock.StockSpillLossOrderRequest">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM stock_spill_loss_order
+        <where>
+            stock_variance_type = 1,
+            auditor_time <![CDATA[>=]]> #{beginTime,jdbcType=TIMESTAMP},
+            auditor_time <![CDATA[<=]]> #{endTime,jdbcType=TIMESTAMP},
+            brand_id = #{brandId,jdbcType=VARCHAR},
+            store_id = #{storeId,jdbcType=VARCHAR},
+            valid_status =0
+        </where>
+        ORDER BY update_time DESC
+    </select>
+
+    <select id="queryIds" resultType="java.lang.String"
+            parameterType="com.hanyun.scm.api.domain.BaseParams">
+        SELECT stock_variance_id
+        FROM stock_spill_loss_order
+        <where>
+            AND stock_variance_type = #{stockVarianceType,jdbcType=TINYINT}
+            AND stock_variance_status = 3
+            AND update_time <![CDATA[>=]]> #{beginTime,jdbcType=TIMESTAMP}
+            AND update_time <![CDATA[<=]]> #{endTime,jdbcType=TIMESTAMP}
+            AND valid_status =0
+        </where>
+    </select>
+</mapper>

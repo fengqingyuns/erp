@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.StockCheckDifferenceDetailDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.StockCheckDifferenceDetail">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="warehouse_id" property="warehouseId" jdbcType="VARCHAR"/>
+        <result column="stock_check_difference_id" property="stockCheckDifferenceId" jdbcType="VARCHAR"/>
+        <result column="stock_check_difference_detail_id" property="stockCheckDifferenceDetailId" jdbcType="VARCHAR"/>
+        <result column="goods_id" property="goodsId" jdbcType="VARCHAR"/>
+        <result column="goods_name" property="goodsName" jdbcType="VARCHAR"/>
+        <result column="goods_code" property="goodsCode" jdbcType="VARCHAR"/>
+        <result column="classify_id" property="classifyId" jdbcType="VARCHAR"/>
+        <result column="classify_name" property="classifyName" jdbcType="VARCHAR"/>
+        <result column="goods_bar_code" property="goodsBarCode" jdbcType="VARCHAR"/>
+        <result column="unit_id" property="unitId" jdbcType="VARCHAR"/>
+        <result column="unit_name" property="unitName" jdbcType="VARCHAR"/>
+        <result column="goods_status" property="goodsStatus" jdbcType="TINYINT"/>
+        <result column="odoo_goods_id" property="odooGoodsId" jdbcType="INTEGER"/>
+        <result column="goods_introduce" property="goodsIntroduce" jdbcType="VARCHAR"/>
+        <result column="unit_price" property="unitPrice" jdbcType="BIGINT"/>
+        <result column="use_type" property="useType" jdbcType="TINYINT"/>
+        <result column="goods_type" property="goodsType" jdbcType="TINYINT"/>
+        <result column="valid_status" property="validStatus" jdbcType="TINYINT"/>
+        <result column="stock_num" property="stockNum" jdbcType="BIGINT"/>
+        <result column="cur_stock" property="curStock" jdbcType="BIGINT"/>
+        <result column="check_stock" property="checkStock" jdbcType="BIGINT"/>
+        <result column="check_diff_stock" property="checkDiffStock" jdbcType="BIGINT"/>
+        <result column="check_diff_price" property="checkDiffPrice" jdbcType="BIGINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="features" property="features" jdbcType="VARCHAR"/>
+        <result column="goods_brand_name" property="goodsBrandName" jdbcType="VARCHAR"/>
+        <result column="check_diff_status" property="checkDiffStatus" jdbcType="TINYINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, brand_id, store_id, warehouse_id, stock_check_difference_id, stock_check_difference_detail_id, goods_id, goods_name, goods_code, classify_id, classify_name, goods_bar_code, unit_id, unit_name, goods_status, 
+        odoo_goods_id, goods_introduce, unit_price, use_type, goods_type, valid_status, stock_num, cur_stock, check_stock, check_diff_stock, check_diff_price, remark, create_time, update_time,features,goods_brand_name,check_diff_status
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM stock_check_difference_detail
+        WHERE id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.StockCheckDifferenceDetail">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM stock_check_difference_detail
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockCheckDifferenceId != null">
+                AND stock_check_difference_id = #{stockCheckDifferenceId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockCheckDifferenceDetailId != null">
+                AND stock_check_difference_detail_id = #{stockCheckDifferenceDetailId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsName != null">
+                AND goods_name = #{goodsName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsCode != null">
+                AND goods_code = #{goodsCode,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyId != null">
+                AND classify_id = #{classifyId,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyName != null">
+                AND classify_name = #{classifyName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code = #{goodsBarCode,jdbcType=VARCHAR}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsStatus != null">
+                AND goods_status = #{goodsStatus,jdbcType=TINYINT}
+            </if>
+            <if test="odooGoodsId != null">
+                AND odoo_goods_id = #{odooGoodsId,jdbcType=INTEGER}
+            </if>
+            <if test="goodsIntroduce != null">
+                AND goods_introduce = #{goodsIntroduce,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="useType != null">
+                AND use_type = #{useType,jdbcType=TINYINT}
+            </if>
+            <if test="goodsType != null">
+                AND goods_type = #{goodsType,jdbcType=TINYINT}
+            </if>
+            <if test="validStatus != null">
+                AND valid_status = #{validStatus,jdbcType=TINYINT}
+            </if>
+            <if test="stockNum != null">
+                AND stock_num = #{stockNum,jdbcType=BIGINT}
+            </if>
+            <if test="curStock != null">
+                AND cur_stock = #{curStock,jdbcType=BIGINT}
+            </if>
+            <if test="checkStock != null">
+                AND check_stock = #{checkStock,jdbcType=BIGINT}
+            </if>
+            <if test="checkDiffStock != null">
+                AND check_diff_stock = #{checkDiffStock,jdbcType=BIGINT}
+            </if>
+            <if test="checkDiffPrice != null">
+                AND check_diff_price = #{checkDiffPrice,jdbcType=BIGINT}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        DELETE FROM stock_check_difference_detail
+        WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insertDetail" parameterType="com.hanyun.scm.api.domain.StockCheckDifferenceDetail">
+        INSERT INTO stock_check_difference_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id,
+            </if>
+            <if test="stockCheckDifferenceId != null">
+                stock_check_difference_id,
+            </if>
+            <if test="stockCheckDifferenceDetailId != null">
+                stock_check_difference_detail_id,
+            </if>
+            <if test="goodsId != null">
+                goods_id,
+            </if>
+            <if test="goodsName != null">
+                goods_name,
+            </if>
+            <if test="goodsCode != null">
+                goods_code,
+            </if>
+            <if test="classifyId != null">
+                classify_id,
+            </if>
+            <if test="classifyName != null">
+                classify_name,
+            </if>
+            <if test="goodsBarCode != null">
+                goods_bar_code,
+            </if>
+            <if test="unitId != null">
+                unit_id,
+            </if>
+            <if test="unitName != null">
+                unit_name,
+            </if>
+            <if test="goodsStatus != null">
+                goods_status,
+            </if>
+            <if test="odooGoodsId != null">
+                odoo_goods_id,
+            </if>
+            <if test="goodsIntroduce != null">
+                goods_introduce,
+            </if>
+            <if test="unitPrice != null">
+                unit_price,
+            </if>
+            <if test="useType != null">
+                use_type,
+            </if>
+            <if test="goodsType != null">
+                goods_type,
+            </if>
+            <if test="validStatus != null">
+                valid_status,
+            </if>
+            <if test="stockNum != null">
+                stock_num,
+            </if>
+            <if test="curStock != null">
+                cur_stock,
+            </if>
+            <if test="checkStock != null">
+                check_stock,
+            </if>
+            <if test="checkDiffStock != null">
+                check_diff_stock,
+            </if>
+            <if test="checkDiffPrice != null">
+                check_diff_price,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="features != null">
+                features,
+            </if>
+            <if test="checkDiffStatus != null">
+                check_diff_status,
+            </if>
+                create_time,
+                update_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseId != null">
+                #{warehouseId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockCheckDifferenceId != null">
+                #{stockCheckDifferenceId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockCheckDifferenceDetailId != null">
+                #{stockCheckDifferenceDetailId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsId != null">
+                #{goodsId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyId != null">
+                #{classifyId,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyName != null">
+                #{classifyName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBarCode != null">
+                #{goodsBarCode,jdbcType=VARCHAR},
+            </if>
+            <if test="unitId != null">
+                #{unitId,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null">
+                #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsStatus != null">
+                #{goodsStatus,jdbcType=TINYINT},
+            </if>
+            <if test="odooGoodsId != null">
+                #{odooGoodsId,jdbcType=INTEGER},
+            </if>
+            <if test="goodsIntroduce != null">
+                #{goodsIntroduce,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                #{unitPrice,jdbcType=BIGINT},
+            </if>
+            <if test="useType != null">
+                #{useType,jdbcType=TINYINT},
+            </if>
+            <if test="goodsType != null">
+                #{goodsType,jdbcType=TINYINT},
+            </if>
+            <if test="validStatus != null">
+                #{validStatus,jdbcType=TINYINT},
+            </if>
+            <if test="stockNum != null">
+                #{stockNum,jdbcType=BIGINT},
+            </if>
+            <if test="curStock != null">
+                #{curStock,jdbcType=BIGINT},
+            </if>
+            <if test="checkStock != null">
+                #{checkStock,jdbcType=BIGINT},
+            </if>
+            <if test="checkDiffStock != null">
+                #{checkDiffStock,jdbcType=BIGINT},
+            </if>
+            <if test="checkDiffPrice != null">
+                #{checkDiffPrice,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="features != null">
+                #{features,jdbcType=VARCHAR},
+            </if>
+            <if test="checkDiffStatus != null">
+                #{checkDiffStatus,jdbcType=TINYINT},
+            </if>
+                NOW(),
+                NOW()
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.hanyun.scm.api.domain.StockCheckDifferenceDetail">
+        UPDATE stock_check_difference_detail
+        <set>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=VARCHAR},
+            </if>
+<!--             <if test="stockCheckDifferenceId != null"> -->
+<!--                 stock_check_difference_id = #{stockCheckDifferenceId,jdbcType=VARCHAR}, -->
+<!--             </if> -->
+<!--             <if test="stockCheckDifferenceDetailId != null"> -->
+<!--                 stock_check_difference_detail_id = #{stockCheckDifferenceDetailId,jdbcType=VARCHAR}, -->
+<!--             </if> -->
+            <if test="goodsId != null">
+                goods_id = #{goodsId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                goods_name = #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                goods_code = #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyId != null">
+                classify_id = #{classifyId,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyName != null">
+                classify_name = #{classifyName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBarCode != null">
+                goods_bar_code = #{goodsBarCode,jdbcType=VARCHAR},
+            </if>
+            <if test="unitId != null">
+                unit_id = #{unitId,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null">
+                unit_name = #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsStatus != null">
+                goods_status = #{goodsStatus,jdbcType=TINYINT},
+            </if>
+            <if test="odooGoodsId != null">
+                odoo_goods_id = #{odooGoodsId,jdbcType=INTEGER},
+            </if>
+            <if test="goodsIntroduce != null">
+                goods_introduce = #{goodsIntroduce,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice,jdbcType=BIGINT},
+            </if>
+            <if test="useType != null">
+                use_type = #{useType,jdbcType=TINYINT},
+            </if>
+            <if test="goodsType != null">
+                goods_type = #{goodsType,jdbcType=TINYINT},
+            </if>
+            <if test="validStatus != null">
+                valid_status = #{validStatus,jdbcType=TINYINT},
+            </if>
+            <if test="stockNum != null">
+                stock_num = #{stockNum,jdbcType=BIGINT},
+            </if>
+            <if test="curStock != null">
+                cur_stock = #{curStock,jdbcType=BIGINT},
+            </if>
+            <if test="checkStock != null">
+                check_stock = #{checkStock,jdbcType=BIGINT},
+            </if>
+            <if test="checkDiffStock != null">
+                check_diff_stock = #{checkDiffStock,jdbcType=BIGINT},
+            </if>
+            <if test="checkDiffPrice != null">
+                check_diff_price = #{checkDiffPrice,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="checkDiffStatus != null">
+                check_diff_status = #{checkDiffStatus,jdbcType=TINYINT},
+            </if>
+        </set>
+        WHERE stock_check_difference_detail_id = #{stockCheckDifferenceDetailId,jdbcType=VARCHAR}
+    </update>
+    <select id="selectByTaskId" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.StockCheckDifferenceDetail">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM stock_check_difference_detail
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockCheckDifferenceId != null">
+                AND stock_check_difference_id = #{stockCheckDifferenceId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockCheckDifferenceDetailId != null">
+                AND stock_check_difference_detail_id = #{stockCheckDifferenceDetailId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsName != null">
+                AND goods_name = #{goodsName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsCode != null">
+                AND goods_code = #{goodsCode,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyId != null">
+                AND classify_id = #{classifyId,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyName != null">
+                AND classify_name = #{classifyName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code = #{goodsBarCode,jdbcType=VARCHAR}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsStatus != null">
+                AND goods_status = #{goodsStatus,jdbcType=TINYINT}
+            </if>
+            <if test="odooGoodsId != null">
+                AND odoo_goods_id = #{odooGoodsId,jdbcType=INTEGER}
+            </if>
+            <if test="goodsIntroduce != null">
+                AND goods_introduce = #{goodsIntroduce,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="useType != null">
+                AND use_type = #{useType,jdbcType=TINYINT}
+            </if>
+            <if test="goodsType != null">
+                AND goods_type = #{goodsType,jdbcType=TINYINT}
+            </if>
+            <if test="validStatus != null">
+                AND valid_status = #{validStatus,jdbcType=TINYINT}
+            </if>
+            <if test="stockNum != null">
+                AND stock_num = #{stockNum,jdbcType=BIGINT}
+            </if>
+            <if test="curStock != null">
+                AND cur_stock = #{curStock,jdbcType=BIGINT}
+            </if>
+            <if test="checkStock != null">
+                AND check_stock = #{checkStock,jdbcType=BIGINT}
+            </if>
+            <if test="checkDiffStock != null">
+                AND check_diff_stock = #{checkDiffStock,jdbcType=BIGINT}
+            </if>
+            <if test="checkDiffPrice != null">
+                AND check_diff_price = #{checkDiffPrice,jdbcType=BIGINT}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                AND create_time <![CDATA[<=]]> #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="beginTime != null">
+                AND create_time <![CDATA[>=]]> #{beginTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        	ORDER BY update_time DESC
+    </select>
+    
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.BrandOdooDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.BrandOdoo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="odoo_company_id" property="odooCompanyId" jdbcType="INTEGER"/>
+        <result column="brand_name" property="brandName" jdbcType="VARCHAR"/>
+        <result column="brand_status" property="brandStatus" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, brand_id, odoo_company_id, brand_name, brand_status, create_time, update_time
+    </sql>
+    <select id="selectByBrandId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM brand_odoo
+        WHERE brand_id = #{brandID,jdbcType=VARCHAR}
+    </select>
+    <select id="countAll" resultType="java.lang.Integer" parameterType="com.hanyun.scm.api.domain.request.brand.BrandQueryRequest">
+        SELECT COUNT(*)
+        FROM brand_odoo
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="odooCompanyId != null">
+                AND odoo_company_id = #{odooCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="brandName != null">
+                AND brand_name = #{brandName,jdbcType=VARCHAR}
+            </if>
+            <if test="brandStatus != null">
+                AND brand_status = #{brandStatus,jdbcType=TINYINT}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+    <select id="select" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.request.brand.BrandQueryRequest">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM brand_odoo
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="odooCompanyId != null">
+                AND odoo_company_id = #{odooCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="brandName != null">
+                AND brand_name = #{brandName,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            AND brand_status = 0
+        </where>
+        ORDER BY create_time DESC
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    <delete id="deleteByBrandId" parameterType="java.lang.String">
+        DELETE FROM brand_odoo
+        WHERE brand_id = #{brandId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insertSelective" parameterType="com.hanyun.scm.api.domain.request.brand.BrandCreateRequest">
+        INSERT INTO brand_odoo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="odooCompanyId != null">
+                odoo_company_id,
+            </if>
+            <if test="brandName != null">
+                brand_name,
+            </if>
+                brand_status,
+                create_time,
+                update_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="odooCompanyId != null">
+                #{odooCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="brandName != null">
+                #{brandName,jdbcType=VARCHAR},
+            </if>
+            0,
+            NOW(),
+            NOW()
+        </trim>
+    </insert>
+    <update id="updateByBrandId" parameterType="com.hanyun.scm.api.domain.request.brand.BrandModifyRequest">
+        UPDATE brand_odoo
+        <set>
+            <if test="odooCompanyId != null">
+                odoo_company_id = #{odooCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="brandName != null">
+                brand_name = #{brandName,jdbcType=VARCHAR},
+            </if>
+            <if test="brandStatus != null">
+                brand_status = #{brandStatus,jdbcType=TINYINT},
+            </if>
+            update_time = NOW()
+        </set>
+        WHERE brand_id = #{brandId,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.WarehouseAreaDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.WarehouseArea">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="warehouse_id" property="warehouseId" jdbcType="VARCHAR"/>
+        <result column="warehouse_name" property="warehouseName" jdbcType="VARCHAR"/>
+        <result column="area_id" property="areaId" jdbcType="VARCHAR"/>
+        <result column="area_name" property="areaName" jdbcType="VARCHAR"/>
+        <result column="area_type" property="areaType" jdbcType="BIT"/>
+        <result column="area_square" property="areaSquare" jdbcType="BIGINT"/>
+        <result column="operator_Id" property="operatorId" jdbcType="VARCHAR"/>
+        <result column="operator_name" property="operatorName" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, brand_id, store_id, warehouse_id, warehouse_name, area_id, area_name, area_type, area_square, operator_Id, operator_name, create_time, update_time
+    </sql>
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM warehouse_area
+        WHERE area_id = #{areaId,jdbcType=VARCHAR}
+    </select>
+    <select id="select" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.WarehouseArea">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM warehouse_area
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseName != null">
+                AND warehouse_name = #{warehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="areaId != null">
+                AND area_id = #{areaId,jdbcType=VARCHAR}
+            </if>
+            <if test="areaName != null">
+                AND area_name = #{areaName,jdbcType=VARCHAR}
+            </if>
+            <if test="areaType != null">
+                AND area_type = #{areaType,jdbcType=BIT}
+            </if>
+            <if test="areaSquare != null">
+                AND area_square = #{areaSquare,jdbcType=BIGINT}
+            </if>
+            <if test="operatorId != null">
+                AND operator_Id = #{operatorId,jdbcType=VARCHAR}
+            </if>
+            <if test="operatorName != null">
+                AND operator_name = #{operatorName,jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY update_time DESC
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="countAll" parameterType="com.hanyun.scm.api.domain.WarehouseArea" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM warehouse_area
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseName != null">
+                AND warehouse_name = #{warehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="areaId != null">
+                AND area_id = #{areaId,jdbcType=VARCHAR}
+            </if>
+            <if test="areaName != null">
+                AND area_name = #{areaName,jdbcType=VARCHAR}
+            </if>
+            <if test="areaType != null">
+                AND area_type = #{areaType,jdbcType=BIT}
+            </if>
+            <if test="areaSquare != null">
+                AND area_square = #{areaSquare,jdbcType=BIGINT}
+            </if>
+            <if test="operatorId != null">
+                AND operator_Id = #{operatorId,jdbcType=VARCHAR}
+            </if>
+            <if test="operatorName != null">
+                AND operator_name = #{operatorName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteById" parameterType="java.lang.String">
+        DELETE FROM warehouse_area
+        WHERE area_id = #{areaId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insertSelective" parameterType="com.hanyun.scm.api.domain.WarehouseArea">
+        INSERT INTO warehouse_area
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id,
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name,
+            </if>
+            <if test="areaId != null">
+                area_id,
+            </if>
+            <if test="areaName != null">
+                area_name,
+            </if>
+            <if test="areaType != null">
+                area_type,
+            </if>
+            <if test="areaSquare != null">
+                area_square,
+            </if>
+            <if test="operatorId != null">
+                operator_Id,
+            </if>
+            <if test="operatorName != null">
+                operator_name,
+            </if>
+            create_time,
+            update_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseId != null">
+                #{warehouseId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="areaId != null">
+                #{areaId,jdbcType=VARCHAR},
+            </if>
+            <if test="areaName != null">
+                #{areaName,jdbcType=VARCHAR},
+            </if>
+            <if test="areaType != null">
+                #{areaType,jdbcType=BIT},
+            </if>
+            <if test="areaSquare != null">
+                #{areaSquare,jdbcType=BIGINT},
+            </if>
+            <if test="operatorId != null">
+                #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorName != null">
+                #{operatorName,jdbcType=VARCHAR},
+            </if>
+            now(),
+            now()
+        </trim>
+    </insert>
+    <update id="updateById" parameterType="com.hanyun.scm.api.domain.WarehouseArea">
+        UPDATE warehouse_area
+        <set>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="areaId != null">
+                area_id = #{areaId,jdbcType=VARCHAR},
+            </if>
+            <if test="areaName != null">
+                area_name = #{areaName,jdbcType=VARCHAR},
+            </if>
+            <if test="areaType != null">
+                area_type = #{areaType,jdbcType=BIT},
+            </if>
+            <if test="areaSquare != null">
+                area_square = #{areaSquare,jdbcType=BIGINT},
+            </if>
+            <if test="operatorId != null">
+                operator_Id = #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorName != null">
+                operator_name = #{operatorName,jdbcType=VARCHAR},
+            </if>
+            update_time = now()
+        </set>
+        WHERE area_id = #{areaId,jdbcType=VARCHAR}
+    </update>
+</mapper>

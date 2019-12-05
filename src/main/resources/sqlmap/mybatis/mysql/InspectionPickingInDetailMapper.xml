@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.InspectionPickingInDetailDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.InspectionPickingInDetail">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="inspection_id" property="inspectionId" jdbcType="VARCHAR"/>
+        <result column="distribution_order_id" property="distributionOrderId" jdbcType="VARCHAR"/>
+        <result column="inspection_detail_id" property="inspectionDetailId" jdbcType="VARCHAR"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="goods_id" property="goodsId" jdbcType="VARCHAR"/>
+        <result column="goods_name" property="goodsName" jdbcType="VARCHAR"/>
+        <result column="goods_code" property="goodsCode" jdbcType="VARCHAR"/>
+        <result column="goods_bar_code" property="goodsBarCode" jdbcType="VARCHAR"/>
+        <result column="unit_id" property="unitId" jdbcType="VARCHAR"/>
+        <result column="unit_name" property="unitName" jdbcType="VARCHAR"/>
+        <result column="goods_brand_name" property="goodsBrandName" jdbcType="VARCHAR"/>
+        <result column="goods_type_name" property="goodsTypeName" jdbcType="VARCHAR"/>
+        <result column="classify_id" property="classifyId" jdbcType="VARCHAR"/>
+        <result column="classify_name" property="classifyName" jdbcType="VARCHAR"/>
+        <result column="features" property="features" jdbcType="VARCHAR"/>
+        <result column="unit_price" property="unitPrice" jdbcType="BIGINT"/>
+        <result column="occupy_num" property="occupyNum" jdbcType="BIGINT"/>
+        <result column="distribution_num" property="distributionNum" jdbcType="BIGINT"/>
+        <result column="receipt_num" property="receiptNum" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="inspection_status" property="inspectionStatus" jdbcType="TINYINT"/>
+        <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, inspection_id, distribution_order_id, inspection_detail_id, brand_id, store_id, goods_id, goods_name, goods_code, goods_bar_code, unit_id, unit_name, goods_brand_name, goods_type_name, classify_id, 
+        classify_name, features, unit_price, occupy_num, distribution_num, receipt_num, create_time, update_time, remark,inspection_status,audit_time
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM inspection_picking_in_detail
+        WHERE inspection_id = #{inspectionId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.InspectionPickingInDetail">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM inspection_picking_in_detail
+        <where>
+            <if test="inspectionId != null">
+                AND inspection_id = #{inspectionId,jdbcType=VARCHAR}
+            </if>
+            <if test="distributionOrderId != null">
+                AND distribution_order_id = #{distributionOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="inspectionDetailId != null">
+                AND inspection_detail_id = #{inspectionDetailId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsName != null">
+                AND goods_name = #{goodsName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsCode != null">
+                AND goods_code = #{goodsCode,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code = #{goodsBarCode,jdbcType=VARCHAR}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsBrandName != null">
+                AND goods_brand_name = #{goodsBrandName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsTypeName != null">
+                AND goods_type_name = #{goodsTypeName,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyId != null">
+                AND classify_id = #{classifyId,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyName != null">
+                AND classify_name = #{classifyName,jdbcType=VARCHAR}
+            </if>
+            <if test="features != null">
+                AND features = #{features,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="occupyNum != null">
+                AND occupy_num = #{occupyNum,jdbcType=BIGINT}
+            </if>
+            <if test="distributionNum != null">
+                AND distribution_num = #{distributionNum,jdbcType=BIGINT}
+            </if>
+            <if test="receiptNum != null">
+                AND receipt_num = #{receiptNum,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="inspectionStatus != null">
+                AND inspection_status = #{inspectionStatus,jdbcType=TINYINT}
+            </if>
+            <if test="auditTime != null">
+                AND audit_time = #{auditTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="inspectionStockInIds != null">
+                AND inspection_id IN (NULL
+                <foreach collection="inspectionStockInIds" item="inspectionStockInId">
+                    ,#{inspectionStockInId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
+    <select id="selectByInspectionId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM inspection_picking_in_detail
+        <where>
+            inspection_id = #{inspectionId,jdbcType=VARCHAR}
+        </where>
+    </select>
+    <select id="queryByDistributionId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM inspection_picking_in_detail
+        <where>
+            distribution_order_id = #{distributionOrderId,jdbcType=VARCHAR} AND inspection_status = 0
+        </where>
+    </select>
+    <delete id="deleteByIds" parameterType="java.lang.String">
+        DELETE FROM inspection_picking_in_detail
+        WHERE goods_id = #{goodsId,jdbcType=VARCHAR} AND inspection_id = #{inspectionPickingInId,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByInspectionId" parameterType="java.lang.String">
+        DELETE FROM inspection_picking_in_detail
+        WHERE inspection_id = #{inspectionId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insertSelective" parameterType="com.hanyun.scm.api.domain.InspectionPickingInDetail">
+        INSERT INTO inspection_picking_in_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="inspectionId != null">
+                inspection_id,
+            </if>
+            <if test="distributionOrderId != null">
+                distribution_order_id,
+            </if>
+            <if test="inspectionDetailId != null">
+                inspection_detail_id,
+            </if>
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="goodsId != null">
+                goods_id,
+            </if>
+            <if test="goodsName != null">
+                goods_name,
+            </if>
+            <if test="goodsCode != null">
+                goods_code,
+            </if>
+            <if test="goodsBarCode != null">
+                goods_bar_code,
+            </if>
+            <if test="unitId != null">
+                unit_id,
+            </if>
+            <if test="unitName != null">
+                unit_name,
+            </if>
+            <if test="goodsBrandName != null">
+                goods_brand_name,
+            </if>
+            <if test="goodsTypeName != null">
+                goods_type_name,
+            </if>
+            <if test="classifyId != null">
+                classify_id,
+            </if>
+            <if test="classifyName != null">
+                classify_name,
+            </if>
+            <if test="features != null">
+                features,
+            </if>
+            <if test="unitPrice != null">
+                unit_price,
+            </if>
+            <if test="occupyNum != null">
+                occupy_num,
+            </if>
+            <if test="distributionNum != null">
+                distribution_num,
+            </if>
+            <if test="receiptNum != null">
+                receipt_num,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="inspectionStatus != null">
+                inspection_status ,
+            </if>
+            <if test="auditTime != null">
+                audit_time,
+            </if>
+                create_time,
+                update_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="inspectionId != null">
+                #{inspectionId,jdbcType=VARCHAR},
+            </if>
+            <if test="distributionOrderId != null">
+                #{distributionOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="inspectionDetailId != null">
+                #{inspectionDetailId,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsId != null">
+                #{goodsId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBarCode != null">
+                #{goodsBarCode,jdbcType=VARCHAR},
+            </if>
+            <if test="unitId != null">
+                #{unitId,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null">
+                #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBrandName != null">
+                #{goodsBrandName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsTypeName != null">
+                #{goodsTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyId != null">
+                #{classifyId,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyName != null">
+                #{classifyName,jdbcType=VARCHAR},
+            </if>
+            <if test="features != null">
+                #{features,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                #{unitPrice,jdbcType=BIGINT},
+            </if>
+            <if test="occupyNum != null">
+                #{occupyNum,jdbcType=BIGINT},
+            </if>
+            <if test="distributionNum != null">
+                #{distributionNum,jdbcType=BIGINT},
+            </if>
+            <if test="receiptNum != null">
+                #{receiptNum,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="inspectionStatus != null">
+                #{inspectionStatus,jdbcType=TINYINT},
+            </if>
+            <if test="auditTime != null">
+                #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            NOW(),
+            NOW(),
+        </trim>
+    </insert>
+    <update id="updateDetail" parameterType="com.hanyun.scm.api.domain.InspectionPickingInDetail">
+        UPDATE inspection_picking_in_detail
+        <set>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsId != null">
+                goods_id = #{goodsId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                goods_name = #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                goods_code = #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBarCode != null">
+                goods_bar_code = #{goodsBarCode,jdbcType=VARCHAR},
+            </if>
+            <if test="unitId != null">
+                unit_id = #{unitId,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null">
+                unit_name = #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBrandName != null">
+                goods_brand_name = #{goodsBrandName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsTypeName != null">
+                goods_type_name = #{goodsTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyId != null">
+                classify_id = #{classifyId,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyName != null">
+                classify_name = #{classifyName,jdbcType=VARCHAR},
+            </if>
+            <if test="features != null">
+                features = #{features,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice,jdbcType=BIGINT},
+            </if>
+            <if test="occupyNum != null">
+                occupy_num = #{occupyNum,jdbcType=BIGINT},
+            </if>
+            <if test="distributionNum != null">
+                distribution_num = #{distributionNum,jdbcType=BIGINT},
+            </if>
+            <if test="receiptNum != null">
+                receipt_num = #{receiptNum,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+                update_time = NOW(),
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="inspectionStatus != null">
+                inspection_status = #{inspectionStatus,jdbcType=TINYINT},
+            </if>
+            <if test="auditTime != null">
+                audit_time = #{auditTime,jdbcType=TIMESTAMP}
+            </if>
+        </set>
+        WHERE goods_id = #{goodsId,jdbcType=BIGINT} AND inspection_id = #{inspectionId,jdbcType=VARCHAR}
+    </update>
+    <update id="auditOrder" parameterType="java.lang.String">
+        UPDATE inspection_picking_in_detail
+        <set>
+            inspection_status=3,
+            update_time = NOW(),
+            audit_time = NOW()
+        </set>
+        WHERE inspection_id = #{inspectionId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="queryBrandReceiptNum" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT brand_id brandId, sum(receipt_num) receiptNum, goods_id goodsId, goods_name goodsName, goods_code goodsCode, goods_bar_code goodsBarCode
+        FROM inspection_picking_in_detail
+        <where>
+            AND inspection_id IN (NULL
+            <foreach collection="ids" item="id">
+                ,#{id, jdbcType=VARCHAR}
+            </foreach>
+            )
+            AND(
+            store_id is NULL
+            OR store_id = ''
+            )
+        </where>
+        GROUP BY brand_id,goods_id
+    </select>
+    <select id="queryStoreReceiptNum" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT brand_id brandId,store_id storeId,sum(receipt_num) receiptNum,goods_id goodsId,goods_name goodsName, goods_code goodsCode, goods_bar_code goodsBarCode
+        FROM inspection_picking_in_detail
+        <where>
+            AND inspection_id IN (NULL
+            <foreach collection="ids" item="id">
+                ,#{id, jdbcType=VARCHAR}
+            </foreach>
+            )
+            AND (
+            store_id is NOT NULL
+            OR store_id != ''
+            )
+        </where>
+        GROUP BY brand_id,store_id,goods_id
+    </select>
+
+</mapper>

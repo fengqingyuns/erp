@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.ProcessInstanceDetailDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.ProcessInstanceDetail">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="process_instance_detail_id" property="processInstanceDetailId" jdbcType="VARCHAR"/>
+        <result column="process_instance_id" property="processInstanceId" jdbcType="VARCHAR"/>
+        <result column="activiti_process_instance_id" property="activitiProcessInstanceId" jdbcType="VARCHAR"/>
+        <result column="process_detail_id" property="processDetailId" jdbcType="VARCHAR"/>
+        <result column="auditor_id" property="auditorId" jdbcType="VARCHAR"/>
+        <result column="auditor_name" property="auditorName" jdbcType="VARCHAR"/>
+        <result column="auditor_type" property="auditorType" jdbcType="TINYINT"/>
+        <result column="sort_no" property="sortNo" jdbcType="TINYINT"/>
+        <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="audit_status" property="auditStatus" jdbcType="BIT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, brand_id, process_instance_detail_id, process_instance_id, activiti_process_instance_id, process_detail_id, auditor_id, auditor_name, auditor_type, sort_no, audit_time, remark, audit_status, create_time, update_time
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM process_instance_detail
+        WHERE id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="queryAuditors" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT auditor_id
+        FROM process_instance_detail
+        WHERE process_instance_id = #{id, jdbcType=VARCHAR}
+    </select>
+    <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.ProcessInstanceDetail">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM process_instance_detail
+        <where>
+            <if test="processInstanceDetailId != null">
+                AND process_instance_detail_id = #{processInstanceDetailId,jdbcType=VARCHAR}
+            </if>
+            <if test="processInstanceId != null">
+                AND process_instance_id = #{processInstanceId,jdbcType=VARCHAR}
+            </if>
+            <if test="activitiProcessInstanceId != null">
+                AND activiti_process_instance_id = #{activitiProcessInstanceId,jdbcType=VARCHAR}
+            </if>
+            <if test="processDetailId != null">
+                AND process_detail_id = #{processDetailId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorId != null">
+                AND auditor_id = #{auditorId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorName != null">
+                AND auditor_name = #{auditorName,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorType != null">
+                AND auditor_type = #{auditorType,jdbcType=TINYINT}
+            </if>
+            <if test="sortNo != null">
+                AND sort_no = #{sortNo,jdbcType=TINYINT}
+            </if>
+            <if test="auditTime != null">
+                AND audit_time = #{auditTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="auditStatus != null">
+                AND audit_status = #{auditStatus,jdbcType=BIT}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByProcessInstanceId" parameterType="java.lang.String">
+        DELETE FROM process_instance_detail
+        WHERE process_instance_id = #{processInstanceId, jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        DELETE FROM process_instance_detail
+        WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insertSelective" parameterType="com.hanyun.scm.api.domain.ProcessInstanceDetail">
+        INSERT INTO process_instance_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="processInstanceDetailId != null">
+                process_instance_detail_id,
+            </if>
+            <if test="processInstanceId != null">
+                process_instance_id,
+            </if>
+            <if test="activitiProcessInstanceId != null">
+                activiti_process_instance_id,
+            </if>
+            <if test="processDetailId != null">
+                process_detail_id,
+            </if>
+            <if test="auditorId != null">
+                auditor_id,
+            </if>
+            <if test="auditorName != null">
+                auditor_name,
+            </if>
+            <if test="auditorType != null">
+                auditor_type,
+            </if>
+            <if test="sortNo != null">
+                sort_no,
+            </if>
+            <if test="auditTime != null">
+                audit_time,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="auditStatus != null">
+                audit_status,
+            </if>
+            create_time,
+            update_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                #{brandId, jdbcType=VARCHAR},
+            </if>
+            <if test="processInstanceDetailId != null">
+                #{processInstanceDetailId,jdbcType=VARCHAR},
+            </if>
+            <if test="processInstanceId != null">
+                #{processInstanceId,jdbcType=VARCHAR},
+            </if>
+            <if test="activitiProcessInstanceId != null">
+                #{activitiProcessInstanceId,jdbcType=VARCHAR},
+            </if>
+            <if test="processDetailId != null">
+                #{processDetailId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorType != null">
+                #{auditorType,jdbcType=TINYINT},
+            </if>
+            <if test="sortNo != null">
+                #{sortNo,jdbcType=TINYINT},
+            </if>
+            <if test="auditTime != null">
+                #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStatus != null">
+                #{auditStatus,jdbcType=BIT},
+            </if>
+            NOW(),
+            NOW(),
+        </trim>
+    </insert>
+    <update id="updateByDetailIdSelective" parameterType="com.hanyun.scm.api.domain.ProcessInstanceDetail">
+        UPDATE process_instance_detail
+        <set>
+            <if test="processInstanceId != null">
+                process_instance_id = #{processInstanceId,jdbcType=VARCHAR},
+            </if>
+            <if test="activitiProcessInstanceId != null">
+                activiti_process_instance_id = #{activitiProcessInstanceId,jdbcType=VARCHAR},
+            </if>
+            <if test="processDetailId != null">
+                process_detail_id = #{processDetailId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                auditor_name = #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorType != null">
+                auditor_type = #{auditorType,jdbcType=TINYINT},
+            </if>
+            <if test="sortNo != null">
+                sort_no = #{sortNo,jdbcType=TINYINT},
+            </if>
+            <if test="auditTime != null">
+                audit_time = #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStatus != null">
+                audit_status = #{auditStatus,jdbcType=BIT},
+            </if>
+            update_time = NOW(),
+        </set>
+        WHERE process_instance_detail_id = #{processInstanceDetailId,jdbcType=VARCHAR}
+    </update>
+</mapper>

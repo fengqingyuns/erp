@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.ReplenishmentApplyDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.ReplenishmentApply">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="replenishment_id" property="replenishmentId" jdbcType="VARCHAR"/>
+        <result column="replenishment_document_id" property="replenishmentDocumentId" jdbcType="VARCHAR"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="distribution_id" property="distributionId" jdbcType="VARCHAR"/>
+        <result column="distribution_name" property="distributionName" jdbcType="VARCHAR"/>
+        <result column="apply_num" property="applyNum" jdbcType="BIGINT"/>
+        <result column="total_price" property="totalPrice" jdbcType="BIGINT"/>
+        <result column="operator_name" property="operatorName" jdbcType="VARCHAR"/>
+        <result column="operator_id" property="operatorId" jdbcType="VARCHAR"/>
+        <result column="auditor_id" property="auditorId" jdbcType="VARCHAR"/>
+        <result column="auditor_name" property="auditorName" jdbcType="VARCHAR"/>
+        <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP"/>
+        <result column="replenishment_status" property="replenishmentStatus" jdbcType="TINYINT"/>
+        <result column="receipt_status" property="receiptStatus" jdbcType="TINYINT"/>
+        <result column="business_man_id" property="businessManId" jdbcType="VARCHAR"/>
+        <result column="business_man_name" property="businessManName" jdbcType="VARCHAR"/>
+        <result column="valid_time" property="validTime" jdbcType="TIMESTAMP"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="to_store_id" property="toStoreId" jdbcType="VARCHAR"/>
+        <result column="to_store_name" property="toStoreName" jdbcType="VARCHAR"/>
+        <result column="valid_status" property="validStatus" jdbcType="TINYINT"/>
+        <result column="distribute_status" property="distributeStatus" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="expected_arrival_date" property="expectedArrivalDate" jdbcType="TIMESTAMP"/>
+        <result column="distribution_type" property="distributionType" jdbcType="TINYINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id ,replenishment_id, replenishment_document_id, brand_id, store_id, distribution_id, distribution_name, apply_num, total_price, operator_name, operator_id, auditor_id, auditor_name, audit_time, replenishment_status,
+        receipt_status, business_man_id, business_man_name, valid_time, remark, to_store_id, to_store_name, distribute_status, valid_status, create_time, update_time, expected_arrival_date, distribution_type
+    </sql>
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM replenishment_apply
+        WHERE  replenishment_id = #{replenishmentId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectSelective" resultMap="BaseResultMap"
+            parameterType="com.hanyun.scm.api.domain.request.Replenishment.ReplenishmentApplyRequest">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM replenishment_apply
+        <where>
+            <if test="replenishmentId != null">
+                AND replenishment_id= #{replenishmentId,jdbcType=VARCHAR}
+            </if>
+            <if test="replenishmentDocumentId != null">
+                AND replenishment_document_id LIKE concat (#{replenishmentDocumentId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="distributionId != null">
+                AND distribution_id = #{distributionId,jdbcType=VARCHAR}
+            </if>
+            <if test="distributionName != null">
+                AND distribution_name = #{distributionName,jdbcType=VARCHAR}
+            </if>
+            <if test="applyNum != null">
+                AND apply_num = #{applyNum,jdbcType=BIGINT}
+            </if>
+            <if test="totalPrice != null">
+                AND total_price = #{totalPrice,jdbcType=BIGINT}
+            </if>
+            <if test="operatorName != null">
+                AND operator_name LIKE concat ('%',#{operatorName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="operatorId != null">
+                AND operator_id = #{operatorId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorId != null">
+                AND auditor_id = #{auditorId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorName != null">
+                AND auditor_name = #{auditorName,jdbcType=VARCHAR}
+            </if>
+            <if test="auditTime != null">
+                AND audit_time = #{auditTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="replenishmentStatus != null">
+                AND replenishment_status = #{replenishmentStatus,jdbcType=TINYINT}
+            </if>
+            <if test="appQueryApply != null">
+                AND replenishment_status <![CDATA[>=]]> #{appQueryApply,jdbcType=TINYINT}
+            </if>
+            <if test="receiptStatus != null">
+                AND receipt_status != #{receiptStatus,jdbcType=TINYINT}
+            </if>
+            <if test="receiptQueryByApp != null">
+                AND receipt_status != 3
+                AND receipt_status != 0
+            </if>
+            <if test="businessManId != null">
+                AND business_man_id = #{businessManId,jdbcType=VARCHAR}
+            </if>
+            <if test="businessManName != null">
+                AND business_man_name = #{businessManName,jdbcType=VARCHAR}
+            </if>
+            <if test="validTime != null">
+                AND valid_time = #{validTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="toStoreId != null">
+                AND to_store_id = #{toStoreId,jdbcType=VARCHAR}
+            </if>
+            <if test="toStoreName != null">
+                AND to_store_name = #{toStoreName,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="queryBeginTime != null">
+                AND update_time <![CDATA[>=]]> #{queryBeginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="queryEndTime != null">
+                AND update_time <![CDATA[<=]]> #{queryEndTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="distributionType != null">
+                AND distribution_type = #{distributionType,jdbcType=TINYINT}
+            </if>
+            <if test="storeIds != null">
+                AND to_store_id IN (NULL
+                <foreach collection="storeIds" item="id">
+                    , #{id, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            <if test="replenishmentApplyIds != null">
+                AND replenishment_id IN (NULL
+                <foreach collection="replenishmentApplyIds" item="replenishmentId">
+                    , #{replenishmentId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            <if test="distributeStatus != null">
+                AND distribute_status = #{distributeStatus, jdbcType=TINYINT}
+            </if>
+            <if test="ids != null">
+                AND replenishment_id IN (NULL
+                <foreach collection="ids" item="id">
+                    , #{id, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            AND valid_status = 0
+        </where>
+        ORDER BY id
+        <if test="sort==null || sort == '0'">DESC</if>
+        <if test="sort == '1'">ASC</if>
+
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="countAllSelect" resultType="java.lang.Integer"
+            parameterType="com.hanyun.scm.api.domain.request.Replenishment.ReplenishmentApplyRequest">
+        SELECT
+        COUNT(*)
+        FROM replenishment_apply
+        <where>
+            <if test="replenishmentId != null">
+                AND replenishment_id= #{replenishmentId,jdbcType=VARCHAR}
+            </if>
+            <if test="replenishmentDocumentId != null">
+                AND replenishment_document_id LIKE concat (#{replenishmentDocumentId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="distributionId != null">
+                AND distribution_id = #{distributionId,jdbcType=VARCHAR}
+            </if>
+            <if test="distributionName != null">
+                AND distribution_name = #{distributionName,jdbcType=VARCHAR}
+            </if>
+            <if test="applyNum != null">
+                AND apply_num = #{applyNum,jdbcType=BIGINT}
+            </if>
+            <if test="totalPrice != null">
+                AND total_price = #{totalPrice,jdbcType=BIGINT}
+            </if>
+            <if test="operatorName != null">
+                AND operator_name LIKE concat ('%',#{operatorName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="operatorId != null">
+                AND operator_id = #{operatorId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorId != null">
+                AND auditor_id = #{auditorId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorName != null">
+                AND auditor_name = #{auditorName,jdbcType=VARCHAR}
+            </if>
+            <if test="auditTime != null">
+                AND audit_time = #{auditTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="replenishmentStatus != null">
+                AND replenishment_status = #{replenishmentStatus,jdbcType=TINYINT}
+            </if>
+            <if test="appQueryApply != null">
+                AND replenishment_status <![CDATA[>=]]> #{appQueryApply,jdbcType=TINYINT}
+            </if>
+            <if test="receiptStatus != null">
+                AND receipt_status != #{receiptStatus,jdbcType=TINYINT}
+            </if>
+            <if test="receiptQueryByApp != null">
+                AND receipt_status != 3
+                AND receipt_status != 0
+            </if>
+            <if test="businessManId != null">
+                AND business_man_id = #{businessManId,jdbcType=VARCHAR}
+            </if>
+            <if test="businessManName != null">
+                AND business_man_name = #{businessManName,jdbcType=VARCHAR}
+            </if>
+            <if test="validTime != null">
+                AND valid_time = #{validTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="toStoreId != null">
+                AND to_store_id = #{toStoreId,jdbcType=VARCHAR}
+            </if>
+            <if test="toStoreName != null">
+                AND to_store_name = #{toStoreName,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="queryBeginTime != null">
+                AND update_time <![CDATA[>=]]> #{queryBeginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="queryEndTime != null">
+                AND update_time <![CDATA[<=]]> #{queryEndTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="distributionType != null">
+                AND distribution_type = #{distributionType,jdbcType=TINYINT}
+            </if>
+            <if test="storeIds != null">
+                AND to_store_id IN (NULL
+                <foreach collection="storeIds" item="id">
+                    , #{id, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            <if test="replenishmentApplyIds != null">
+                AND replenishment_id IN (NULL
+                <foreach collection="replenishmentApplyIds" item="replenishmentId">
+                    , #{replenishmentId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            <if test="distributeStatus != null">
+                AND distribute_status = #{distributeStatus, jdbcType=TINYINT}
+            </if>
+            AND valid_status = 0
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        DELETE FROM replenishment_apply
+        WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insertSelective" parameterType="com.hanyun.scm.api.domain.ReplenishmentApply">
+        INSERT INTO replenishment_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="replenishmentId != null">
+                replenishment_id,
+            </if>
+            <if test="replenishmentDocumentId != null">
+                replenishment_document_id,
+            </if>
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="distributionId != null">
+                distribution_id,
+            </if>
+            <if test="distributionName != null">
+                distribution_name,
+            </if>
+            <if test="applyNum != null">
+                apply_num,
+            </if>
+            <if test="totalPrice != null">
+                total_price,
+            </if>
+            <if test="operatorName != null">
+                operator_name,
+            </if>
+            <if test="operatorId != null">
+                operator_id,
+            </if>
+            <if test="auditorId != null">
+                auditor_id,
+            </if>
+            <if test="auditorName != null">
+                auditor_name,
+            </if>
+            <if test="auditTime != null">
+                audit_time,
+            </if>
+                replenishment_status,
+                receipt_status,
+            <if test="businessManId != null">
+                business_man_id,
+            </if>
+            <if test="businessManName != null">
+                business_man_name,
+            </if>
+            <if test="validTime != null">
+                valid_time,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="toStoreId != null">
+                to_store_id,
+            </if>
+            <if test="toStoreName != null">
+                to_store_name,
+            </if>
+            <if test="expectedArrivalDate != null">
+                expected_arrival_date,
+            </if>
+            <if test="distributionType != null">
+                distribution_type,
+            </if>
+                valid_status,
+                distribute_status,
+                create_time,
+                update_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="replenishmentId != null">
+                #{replenishmentId,jdbcType=VARCHAR},
+            </if>
+            <if test="replenishmentDocumentId != null">
+                #{replenishmentDocumentId,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="distributionId != null">
+                #{distributionId,jdbcType=VARCHAR},
+            </if>
+            <if test="distributionName != null">
+                #{distributionName,jdbcType=VARCHAR},
+            </if>
+            <if test="applyNum != null">
+                #{applyNum,jdbcType=BIGINT},
+            </if>
+            <if test="totalPrice != null">
+                #{totalPrice,jdbcType=BIGINT},
+            </if>
+            <if test="operatorName != null">
+                #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorId != null">
+                #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditTime != null">
+                #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            0,
+            0,
+            <if test="businessManId != null">
+                #{businessManId,jdbcType=VARCHAR},
+            </if>
+            <if test="businessManName != null">
+                #{businessManName,jdbcType=VARCHAR},
+            </if>
+            <if test="validTime != null">
+                #{validTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="toStoreId != null">
+                #{toStoreId,jdbcType=VARCHAR},
+            </if>
+            <if test="toStoreName != null">
+                #{toStoreName,jdbcType=VARCHAR},
+            </if>
+            <if test="expectedArrivalDate != null">
+                #{expectedArrivalDate, jdbcType=TIMESTAMP},
+            </if>
+            <if test="distributionType != null">
+                #{distributionType, jdbcType=TINYINT},
+            </if>
+            0,
+            0,
+            NOW(),
+            NOW()
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.hanyun.scm.api.domain.ReplenishmentApply">
+        UPDATE replenishment_apply
+        <set>
+            <if test="distributionId != null">
+                distribution_id = #{distributionId,jdbcType=VARCHAR},
+            </if>
+            <if test="distributionName != null">
+                distribution_name = #{distributionName,jdbcType=VARCHAR},
+            </if>
+            <if test="applyNum != null">
+                apply_num = #{applyNum,jdbcType=BIGINT},
+            </if>
+            <if test="totalPrice != null">
+                total_price = #{totalPrice,jdbcType=BIGINT},
+            </if>
+            <if test="operatorName != null">
+                operator_name = #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorId != null">
+                operator_id = #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                auditor_name = #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStatus == 1">
+                audit_time = NOW(),
+            </if>
+            <if test="auditTime != null">
+                audit_time = NOW(),
+            </if>
+            <if test="replenishmentStatus != null">
+                replenishment_status = #{replenishmentStatus,jdbcType=TINYINT},
+            </if>
+            <if test="receiptStatus != null">
+                receipt_status = #{receiptStatus,jdbcType=TINYINT},
+            </if>
+            <if test="businessManId != null">
+                business_man_id = #{businessManId,jdbcType=VARCHAR},
+            </if>
+            <if test="businessManName != null">
+                business_man_name = #{businessManName,jdbcType=VARCHAR},
+            </if>
+            <if test="validTime != null">
+                valid_time = #{validTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="toStoreId != null">
+                to_store_id = #{toStoreId,jdbcType=VARCHAR},
+            </if>
+            <if test="toStoreName != null">
+                to_store_name = #{toStoreName,jdbcType=VARCHAR},
+            </if>
+            <if test="validStatus != null">
+                valid_status = #{validStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="distributeStatus != null">
+                distribute_status = #{distributeStatus, jdbcType=TINYINT},
+            </if>
+            <if test="expectedArrivalDate != null">
+                expected_arrival_date = #{expectedArrivalDate, jdbcType=TIMESTAMP},
+            </if>
+                update_time = NOW(),
+        </set>
+                WHERE  replenishment_id = #{replenishmentId,jdbcType=VARCHAR}
+    </update>
+    <select id="countGoodsTotal" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT SUM(apply_num)
+        FROM replenishment_apply
+        WHERE  replenishment_id = #{replenishmentId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectIds" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.request.Replenishment.ReplenishmentApplyRequest">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM replenishment_apply
+        <where>
+            <if test="replenishmentApplyIds != null">
+                AND replenishment_id IN (
+                <foreach collection="replenishmentApplyIds" item="orderId" separator=",">
+                    #{orderId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+        </where>
+        ORDER BY create_time ASC
+    </select>
+    <update id="invalidateApply" parameterType="java.util.Date">
+        UPDATE replenishment_apply
+        SET replenishment_status = 4
+        <where>
+            <choose>
+                <when test="validTime != null">
+                    AND valid_time <![CDATA[<=]]> #{validTime, jdbcType=TIMESTAMP}
+                </when>
+                <otherwise>
+                    AND valid_time <![CDATA[<=]]> now()
+                </otherwise>
+            </choose>
+            AND replenishment_status = 0
+        </where>
+    </update>
+
+    <select id="queryIds" parameterType="com.hanyun.scm.api.domain.BaseParams" resultType="java.lang.String">
+        SELECT replenishment_id
+        FROM replenishment_apply
+        <where>
+            AND replenishment_status = 3
+            AND valid_status = 0
+            AND update_time <![CDATA[>=]]> #{beginTime,jdbcType=TIMESTAMP}
+            AND update_time <![CDATA[<=]]> #{endTime,jdbcType=TIMESTAMP}
+        </where>
+    </select>
+</mapper>

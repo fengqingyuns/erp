@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.DisassemblyOrderDetailDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.DisassemblyOrderDetail">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="disassembly_order_detail_id" property="disassemblyOrderDetailId" jdbcType="VARCHAR"/>
+        <result column="disassembly_order_id" property="disassemblyOrderId" jdbcType="VARCHAR"/>
+        <result column="goods_id" property="goodsId" jdbcType="VARCHAR"/>
+        <result column="goods_name" property="goodsName" jdbcType="VARCHAR"/>
+        <result column="goods_code" property="goodsCode" jdbcType="VARCHAR"/>
+        <result column="goods_bar_code" property="goodsBarCode" jdbcType="VARCHAR"/>
+        <result column="goods_type_name" property="goodsTypeName" jdbcType="VARCHAR"/>
+        <result column="goods_brand_name" property="goodsBrandName" jdbcType="VARCHAR"/>
+        <result column="goods_introduce" property="goodsIntroduce" jdbcType="VARCHAR"/>
+        <result column="disassembly_goods_type" property="disassemblyGoodsType" jdbcType="TINYINT"/>
+        <result column="classify_id" property="classifyId" jdbcType="VARCHAR"/>
+        <result column="classify_name" property="classifyName" jdbcType="VARCHAR"/>
+        <result column="features" property="features" jdbcType="VARCHAR"/>
+        <result column="goods_status" property="goodsStatus" jdbcType="TINYINT"/>
+        <result column="unit_name" property="unitName" jdbcType="VARCHAR"/>
+        <result column="unit_price" property="unitPrice" jdbcType="BIGINT"/>
+        <result column="stock_num" property="stockNum" jdbcType="BIGINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="valid_status" property="validStatus" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, brand_id, store_id, disassembly_order_detail_id, disassembly_order_id, goods_id, goods_name, goods_code, goods_bar_code, goods_type_name, goods_brand_name, goods_introduce, disassembly_goods_type, 
+        classify_id, classify_name, features, goods_status, unit_name, unit_price, stock_num, remark, valid_status, create_time, update_time
+    </sql>
+    <select id="selectByDisassemblyOrderDetailId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM disassembly_order_detail
+        WHERE disassembly_order_detail_id = #{disassemblyOrderDetailId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryMotherDetailObject" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.DisassemblyOrderDetail">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM disassembly_order_detail
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="disassemblyOrderId != null">
+                AND disassembly_order_id = #{disassemblyOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="disassemblyGoodsType != null">
+                AND disassembly_goods_type = #{disassemblyGoodsType,jdbcType=TINYINT}
+            </if>
+                AND valid_status = 0
+            <if test="goodsStatus != null">
+                AND goods_status = #{goodsStatus,jdbcType=TINYINT}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="countAll" resultType="java.lang.Integer" parameterType="com.hanyun.scm.api.domain.DisassemblyOrderDetail">
+        SELECT COUNT(*)
+        FROM disassembly_order_detail
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="disassemblyOrderDetailId != null">
+                AND disassembly_order_detail_id = #{disassemblyOrderDetailId,jdbcType=VARCHAR}
+            </if>
+            <if test="disassemblyOrderId != null">
+                AND disassembly_order_id = #{disassemblyOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsName != null">
+                AND goods_name = #{goodsName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsCode != null">
+                AND goods_code = #{goodsCode,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code = #{goodsBarCode,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsTypeName != null">
+                AND goods_type_name = #{goodsTypeName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsBrandName != null">
+                AND goods_brand_name = #{goodsBrandName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsIntroduce != null">
+                AND goods_introduce = #{goodsIntroduce,jdbcType=VARCHAR}
+            </if>
+            <if test="disassemblyGoodsType != null">
+                AND disassembly_goods_type = #{disassemblyGoodsType,jdbcType=TINYINT}
+            </if>
+            <if test="classifyId != null">
+                AND classify_id = #{classifyId,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyName != null">
+                AND classify_name = #{classifyName,jdbcType=VARCHAR}
+            </if>
+            <if test="features != null">
+                AND features = #{features,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsStatus != null">
+                AND goods_status = #{goodsStatus,jdbcType=TINYINT}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="stockNum != null">
+                AND stock_num = #{stockNum,jdbcType=BIGINT}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="validStatus != null">
+                AND valid_status = #{validStatus,jdbcType=TINYINT}
+            </if>
+                AND valid_status = 0
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
+    <select id="select" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.DisassemblyOrderDetail">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM disassembly_order_detail
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="disassemblyOrderDetailId != null">
+                AND disassembly_order_detail_id = #{disassemblyOrderDetailId,jdbcType=VARCHAR}
+            </if>
+            <if test="disassemblyOrderId != null">
+                AND disassembly_order_id = #{disassemblyOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsName != null">
+                AND goods_name = #{goodsName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsCode != null">
+                AND goods_code = #{goodsCode,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code = #{goodsBarCode,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsTypeName != null">
+                AND goods_type_name = #{goodsTypeName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsBrandName != null">
+                AND goods_brand_name = #{goodsBrandName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsIntroduce != null">
+                AND goods_introduce = #{goodsIntroduce,jdbcType=VARCHAR}
+            </if>
+            <if test="disassemblyGoodsType != null">
+                AND disassembly_goods_type = #{disassemblyGoodsType,jdbcType=TINYINT}
+            </if>
+            <if test="classifyId != null">
+                AND classify_id = #{classifyId,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyName != null">
+                AND classify_name = #{classifyName,jdbcType=VARCHAR}
+            </if>
+            <if test="features != null">
+                AND features = #{features,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsStatus != null">
+                AND goods_status = #{goodsStatus,jdbcType=TINYINT}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="stockNum != null">
+                AND stock_num = #{stockNum,jdbcType=BIGINT}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="validStatus != null">
+                AND valid_status = #{validStatus,jdbcType=TINYINT}
+            </if>
+                AND valid_status = 0
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+    <select id="selectByDisassemblyOrderId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM disassembly_order_detail
+        WHERE disassembly_order_id = #{disassemblyOrderId, jdbcType=VARCHAR}
+        ORDER BY disassembly_goods_type ASC
+    </select>
+    <delete id="deleteByDisassemblyOrderDetailId" parameterType="java.lang.String">
+        DELETE FROM disassembly_order_detail
+        WHERE disassembly_order_detail_id = #{disassemblyOrderDetailId,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByDisassemblyOrderId" parameterType="java.lang.String">
+        DELETE FROM disassembly_order_detail
+        WHERE disassembly_order_id = #{disassemblyOrderId, jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.hanyun.scm.api.domain.DisassemblyOrderDetail">
+        INSERT INTO disassembly_order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="disassemblyOrderDetailId != null">
+                disassembly_order_detail_id,
+            </if>
+            <if test="disassemblyOrderId != null">
+                disassembly_order_id,
+            </if>
+            <if test="goodsId != null">
+                goods_id,
+            </if>
+            <if test="goodsName != null">
+                goods_name,
+            </if>
+            <if test="goodsCode != null">
+                goods_code,
+            </if>
+            <if test="goodsBarCode != null">
+                goods_bar_code,
+            </if>
+            <if test="goodsTypeName != null">
+                goods_type_name,
+            </if>
+            <if test="goodsBrandName != null">
+                goods_brand_name,
+            </if>
+            <if test="goodsIntroduce != null">
+                goods_introduce,
+            </if>
+            <if test="disassemblyGoodsType != null">
+                disassembly_goods_type,
+            </if>
+            <if test="classifyId != null">
+                classify_id,
+            </if>
+            <if test="classifyName != null">
+                classify_name,
+            </if>
+            <if test="features != null">
+                features,
+            </if>
+            <if test="goodsStatus != null">
+                goods_status,
+            </if>
+            <if test="unitName != null">
+                unit_name,
+            </if>
+            <if test="unitPrice != null">
+                unit_price,
+            </if>
+            <if test="stockNum != null">
+                stock_num,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+                valid_status,
+                create_time,
+                update_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="disassemblyOrderDetailId != null">
+                #{disassemblyOrderDetailId,jdbcType=VARCHAR},
+            </if>
+            <if test="disassemblyOrderId != null">
+                #{disassemblyOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsId != null">
+                #{goodsId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBarCode != null">
+                #{goodsBarCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsTypeName != null">
+                #{goodsTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBrandName != null">
+                #{goodsBrandName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsIntroduce != null">
+                #{goodsIntroduce,jdbcType=VARCHAR},
+            </if>
+            <if test="disassemblyGoodsType != null">
+                #{disassemblyGoodsType,jdbcType=TINYINT},
+            </if>
+            <if test="classifyId != null">
+                #{classifyId,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyName != null">
+                #{classifyName,jdbcType=VARCHAR},
+            </if>
+            <if test="features != null">
+                #{features,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsStatus != null">
+                #{goodsStatus,jdbcType=TINYINT},
+            </if>
+            <if test="unitName != null">
+                #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                #{unitPrice,jdbcType=BIGINT},
+            </if>
+            <if test="stockNum != null">
+                #{stockNum,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+                0,
+                NOW(),
+                NOW(),
+        </trim>
+    </insert>
+    <update id="updateByDisassemblyOrderDetailId" parameterType="com.hanyun.scm.api.domain.DisassemblyOrderDetail">
+        UPDATE disassembly_order_detail
+        <set>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="disassemblyOrderDetailId != null">
+                disassembly_order_detail_id = #{disassemblyOrderDetailId,jdbcType=VARCHAR},
+            </if>
+            <if test="disassemblyOrderId != null">
+                disassembly_order_id = #{disassemblyOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsId != null">
+                goods_id = #{goodsId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                goods_name = #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                goods_code = #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBarCode != null">
+                goods_bar_code = #{goodsBarCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsTypeName != null">
+                goods_type_name = #{goodsTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBrandName != null">
+                goods_brand_name = #{goodsBrandName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsIntroduce != null">
+                goods_introduce = #{goodsIntroduce,jdbcType=VARCHAR},
+            </if>
+            <if test="disassemblyGoodsType != null">
+                disassembly_goods_type = #{disassemblyGoodsType,jdbcType=TINYINT},
+            </if>
+            <if test="classifyId != null">
+                classify_id = #{classifyId,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyName != null">
+                classify_name = #{classifyName,jdbcType=VARCHAR},
+            </if>
+            <if test="features != null">
+                features = #{features,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsStatus != null">
+                goods_status = #{goodsStatus,jdbcType=TINYINT},
+            </if>
+            <if test="unitName != null">
+                unit_name = #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice,jdbcType=BIGINT},
+            </if>
+            <if test="stockNum != null">
+                stock_num = #{stockNum,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="validStatus != null">
+                valid_status = #{validStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+                update_time = NOW()
+        </set>
+        WHERE disassembly_order_detail_id = #{disassemblyOrderDetailId,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.ProcessDefinitionDetailDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.ProcessDefinitionDetail">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="process_detail_id" property="processDetailId" jdbcType="VARCHAR"/>
+        <result column="process_id" property="processId" jdbcType="VARCHAR"/>
+        <result column="auditor_id" property="auditorId" jdbcType="VARCHAR"/>
+        <result column="auditor_name" property="auditorName" jdbcType="VARCHAR"/>
+        <result column="auditor_type" property="auditorType" jdbcType="BIT"/>
+        <result column="sort_no" property="sortNo" jdbcType="TINYINT"/>
+        <result column="edit_status" property="editStatus" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, brand_id, process_detail_id, process_id, auditor_id, auditor_name, auditor_type, sort_no, edit_status, create_time, update_time
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM process_definition_detail
+        WHERE id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.ProcessDefinitionDetail">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM process_definition_detail
+        <where>
+            <if test="processDetailId != null">
+                AND process_detail_id = #{processDetailId,jdbcType=VARCHAR}
+            </if>
+            <if test="processId != null">
+                AND process_id = #{processId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorId != null">
+                AND auditor_id = #{auditorId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorName != null">
+                AND auditor_name = #{auditorName,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorType != null">
+                AND auditor_type = #{auditorType,jdbcType=BIT}
+            </if>
+            <if test="sortNo != null">
+                AND sort_no = #{sortNo,jdbcType=TINYINT}
+            </if>
+            <if test="editStatus != null">
+                AND edit_status = #{editStatus, jdbcType=TINYINT}
+            </if>
+        </where>
+        ORDER BY sort_no ASC
+    </select>
+    <delete id="deleteByProcessId" parameterType="java.lang.String">
+        DELETE FROM process_definition_detail
+        WHERE process_id = #{processId, jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        DELETE FROM process_definition_detail
+        WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insertSelective" parameterType="com.hanyun.scm.api.domain.ProcessDefinitionDetail">
+        INSERT INTO process_definition_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="processDetailId != null">
+                process_detail_id,
+            </if>
+            <if test="processId != null">
+                process_id,
+            </if>
+            <if test="auditorId != null">
+                auditor_id,
+            </if>
+            <if test="auditorName != null">
+                auditor_name,
+            </if>
+            <if test="auditorType != null">
+                auditor_type,
+            </if>
+            <if test="sortNo != null">
+                sort_no,
+            </if>
+            edit_status,
+            create_time,
+            update_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                #{brandId, jdbcType=VARCHAR},
+            </if>
+            <if test="processDetailId != null">
+                #{processDetailId,jdbcType=VARCHAR},
+            </if>
+            <if test="processId != null">
+                #{processId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorType != null">
+                #{auditorType,jdbcType=BIT},
+            </if>
+            <if test="sortNo != null">
+                #{sortNo,jdbcType=TINYINT},
+            </if>
+            <choose>
+                <when test="editStatus != null">
+                    #{editStatus, jdbcType=TINYINT},
+                </when>
+                <otherwise>
+                    0,
+                </otherwise>
+            </choose>
+            NOW(),
+            NOW(),
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.hanyun.scm.api.domain.ProcessDefinitionDetail">
+        UPDATE process_definition_detail
+        <set>
+            <if test="processDetailId != null">
+                process_detail_id = #{processDetailId,jdbcType=VARCHAR},
+            </if>
+            <if test="processId != null">
+                process_id = #{processId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                auditor_name = #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorType != null">
+                auditor_type = #{auditorType,jdbcType=BIT},
+            </if>
+            <if test="sortNo != null">
+                sort_no = #{sortNo,jdbcType=TINYINT},
+            </if>
+            <if test="editStatus != null">
+                edit_status = #{editStatus, jdbcType=TINYINT},
+            </if>
+            update_time = NOW(),
+        </set>
+        WHERE id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

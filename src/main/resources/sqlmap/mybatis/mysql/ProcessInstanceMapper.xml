@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.ProcessInstanceDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.ProcessInstance">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="business_id" property="businessId" jdbcType="VARCHAR"/>
+        <result column="process_instance_id" property="processInstanceId" jdbcType="VARCHAR"/>
+        <result column="activiti_process_instance_id" property="activitiProcessInstanceId" jdbcType="VARCHAR"/>
+        <result column="process_id" property="processId" jdbcType="VARCHAR"/>
+        <result column="activiti_process_id" property="activitiProcessId" jdbcType="VARCHAR"/>
+        <result column="instance_status" property="instanceStatus" jdbcType="BIT"/>
+        <result column="process_type" property="processType" jdbcType="TINYINT"/>
+        <result column="current_step" property="currentStep" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, brand_id, business_id, process_instance_id, activiti_process_instance_id, process_id, activiti_process_id, instance_status, process_type, current_step, create_time, update_time
+    </sql>
+    <select id="selectByProcessInstanceId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM process_instance
+        WHERE process_instance_id = #{id,jdbcType=VARCHAR}
+        LIMIT 0, 1
+    </select>
+    <select id="selectByBusinessId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM process_instance
+        WHERE business_id = #{id,jdbcType=VARCHAR}
+        LIMIT 0, 1
+    </select>
+    <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.request.process.instance.ProcessInstanceQueryRequest">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM process_instance
+        <where>
+            <if test="currentStep != null">
+                AND current_step = #{currentStep, jdbcType=TINYINT}
+            </if>
+            AND brand_id = #{brandId, jdbcType=VARCHAR}
+        </where>
+    </select>
+    <delete id="deleteByProcessInstanceId" parameterType="java.lang.String">
+        DELETE FROM process_instance
+        WHERE process_instance_id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insertSelective" parameterType="com.hanyun.scm.api.domain.request.process.instance.ProcessInstanceCreateRequest">
+        INSERT INTO process_instance
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="businessId != null">
+                business_id,
+            </if>
+            <if test="processInstanceId != null">
+                process_instance_id,
+            </if>
+            <if test="activitiProcessInstanceId != null">
+                activiti_process_instance_id,
+            </if>
+            <if test="processId != null">
+                process_id,
+            </if>
+            <if test="activitiProcessId != null">
+                activiti_process_id,
+            </if>
+            <if test="instanceStatus != null">
+                instance_status,
+            </if>
+            <if test="processType != null">
+                process_type,
+            </if>
+            <if test="currentStep != null">
+                current_step,
+            </if>
+            create_time,
+            update_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                #{brandId, jdbcType=VARCHAR},
+            </if>
+            <if test="businessId != null">
+                #{businessId,jdbcType=VARCHAR},
+            </if>
+            <if test="processInstanceId != null">
+                #{processInstanceId,jdbcType=VARCHAR},
+            </if>
+            <if test="activitiProcessInstanceId != null">
+                #{activitiProcessInstanceId,jdbcType=VARCHAR},
+            </if>
+            <if test="processId != null">
+                #{processId,jdbcType=VARCHAR},
+            </if>
+            <if test="activitiProcessId != null">
+                #{activitiProcessId,jdbcType=VARCHAR},
+            </if>
+            <if test="instanceStatus != null">
+                #{instanceStatus,jdbcType=BIT},
+            </if>
+            <if test="processType != null">
+                #{processType,jdbcType=TINYINT},
+            </if>
+            <if test="currentStep != null">
+                #{currentStep, jdbcType=TINYINT},
+            </if>
+            NOW(),
+            NOW(),
+        </trim>
+    </insert>
+    <update id="updateByProcessInstanceIdSelective" parameterType="com.hanyun.scm.api.domain.request.process.instance.ProcessInstanceModifyRequest">
+        UPDATE process_instance
+        <set>
+            <if test="businessId != null">
+                business_id = #{businessId,jdbcType=VARCHAR},
+            </if>
+            <if test="activitiProcessInstanceId != null">
+                activiti_process_instance_id = #{activitiProcessInstanceId,jdbcType=VARCHAR},
+            </if>
+            <if test="processId != null">
+                process_id = #{processId,jdbcType=VARCHAR},
+            </if>
+            <if test="instanceStatus != null">
+                instance_status = #{instanceStatus,jdbcType=BIT},
+            </if>
+            <if test="processType != null">
+                process_type = #{processType,jdbcType=TINYINT},
+            </if>
+            <if test="currentStep != null">
+                current_step = #{currentStep, jdbcType=TINYINT},
+            </if>
+            update_time = NOW(),
+        </set>
+        WHERE process_instance_id = #{processInstanceId,jdbcType=VARCHAR}
+    </update>
+</mapper>

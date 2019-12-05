@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.StockCheckOrderDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.StockCheckOrder">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="stock_check_order_id" property="stockCheckOrderId" jdbcType="VARCHAR"/>
+        <result column="stock_check_order_document_id" property="stockCheckOrderDocumentId" jdbcType="VARCHAR"/>
+        <result column="stock_check_task_id" property="stockCheckTaskId" jdbcType="VARCHAR"/>
+        <result column="stock_check_task_document_id" property="stockCheckTaskDocumentId" jdbcType="VARCHAR"/>
+        <result column="warehouse_id" property="warehouseId" jdbcType="VARCHAR"/>
+        <result column="warehouse_name" property="warehouseName" jdbcType="VARCHAR"/>
+        <result column="operator_id" property="operatorId" jdbcType="VARCHAR"/>
+        <result column="operator_name" property="operatorName" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="stock_check_task_type" property="stockCheckTaskType" jdbcType="TINYINT"/>
+        <result column="stock_check_order_type" property="stockCheckOrderType" jdbcType="TINYINT"/>
+        <result column="stock_check_order_status" property="stockCheckOrderStatus" jdbcType="TINYINT"/>
+        <result column="valid_status" property="validStatus" jdbcType="TINYINT"/>
+        <result column="business_man_id" property="businessManId" jdbcType="VARCHAR"/>
+        <result column="business_man_name" property="businessManName" jdbcType="VARCHAR"/>
+        <result column="auditor_id" property="auditorId" jdbcType="VARCHAR"/>
+        <result column="auditor_name" property="auditorName" jdbcType="VARCHAR"/>
+        <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, brand_id, store_id, stock_check_order_id, stock_check_order_document_id, stock_check_task_id, stock_check_task_document_id, 
+        warehouse_id, warehouse_name, operator_id, operator_name, remark, stock_check_task_type, stock_check_order_type, stock_check_order_status, 
+        valid_status, business_man_id, business_man_name, auditor_id, auditor_name, audit_time, create_time, update_time
+    </sql>
+    <select id="selectByStockCheckOrderId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM stock_check_order
+        WHERE stock_check_order_id = #{stockCheckOrderId,jdbcType=VARCHAR}
+    </select>
+    <select id="countAll" resultType="java.lang.Integer" parameterType="com.hanyun.scm.api.domain.request.stock.StockCheckOrderQueryRequest">
+        SELECT COUNT(*)
+        FROM stock_check_order
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockCheckOrderId != null">
+                AND stock_check_order_id = #{stockCheckOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockCheckOrderDocumentId != null">
+                AND stock_check_order_document_id = #{stockCheckOrderDocumentId,jdbcType=VARCHAR}
+            </if>
+            <if test="inventoryNumberTaskPersonl != null">
+            	AND (stock_check_order_document_id Like concat(#{inventoryNumberTaskPersonl,jdbcType=VARCHAR}, '%')
+                OR stock_check_task_document_id Like concat(#{inventoryNumberTaskPersonl,jdbcType=VARCHAR}, '%')
+            	OR business_man_name Like concat(#{inventoryNumberTaskPersonl,jdbcType=VARCHAR}, '%')
+            	)
+            </if>
+            <if test="singleBeginTime != null and singleBeginTime !=''">
+                AND update_time <![CDATA[>=]]> #{singleBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="singleEndTime != null and singleEndTime !=''">
+                AND update_time <![CDATA[<=]]> #{singleEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="auditBeginTime != null and auditBeginTime !=''">
+                AND audit_time <![CDATA[>=]]> #{auditBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="auditEndTime != null and auditEndTime !=''">
+                AND audit_time <![CDATA[<=]]> #{auditEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="stockCheckTaskId != null">
+                AND stock_check_task_id = #{stockCheckTaskId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockCheckTaskDocumentId != null">
+                AND stock_check_task_document_id = #{stockCheckTaskDocumentId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseName != null">
+                AND warehouse_name = #{warehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="operatorId != null">
+                AND operator_id = #{operatorId,jdbcType=VARCHAR}
+            </if>
+            <if test="operatorName != null">
+                AND operator_name = #{operatorName,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="stockCheckTaskType != null">
+                AND stock_check_task_type = #{stockCheckTaskType,jdbcType=TINYINT}
+            </if>
+            <if test="stockCheckOrderType != null">
+                AND stock_check_order_type = #{stockCheckOrderType,jdbcType=TINYINT}
+            </if>
+            <if test="stockCheckOrderStatus != null">
+                AND stock_check_order_status = #{stockCheckOrderStatus,jdbcType=TINYINT}
+            </if>
+            <if test="validStatus != null">
+                AND valid_status = #{validStatus,jdbcType=TINYINT}
+            </if>
+            <if test="businessManId != null">
+                AND business_man_id = #{businessManId,jdbcType=VARCHAR}
+            </if>
+            <if test="businessManName != null">
+                AND business_man_name = #{businessManName,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorId != null">
+                AND auditor_id = #{auditorId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorName != null">
+                AND auditor_name = #{auditorName,jdbcType=VARCHAR}
+            </if>
+            <if test="auditTime != null">
+                AND audit_time = #{auditTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="inventoryMechanism != null">
+            	AND store_id = #{inventoryMechanism,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    
+    <select id="select" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.request.stock.StockCheckOrderQueryRequest">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM stock_check_order
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockCheckOrderId != null">
+                AND stock_check_order_id = #{stockCheckOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockCheckOrderDocumentId != null">
+                AND stock_check_order_document_id = #{stockCheckOrderDocumentId,jdbcType=VARCHAR}
+            </if>
+            <if test="inventoryNumberTaskPersonl != null">
+            	AND (stock_check_order_document_id Like concat(#{inventoryNumberTaskPersonl,jdbcType=VARCHAR}, '%')
+                OR stock_check_task_document_id Like concat(#{inventoryNumberTaskPersonl,jdbcType=VARCHAR}, '%')
+            	OR business_man_name Like concat(#{inventoryNumberTaskPersonl,jdbcType=VARCHAR}, '%')
+            	)
+            </if>
+            <if test="singleBeginTime != null and singleBeginTime !=''">
+                AND update_time <![CDATA[>=]]> #{singleBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="singleEndTime != null and singleEndTime !=''">
+                AND update_time <![CDATA[<=]]> #{singleEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="auditBeginTime != null and auditBeginTime !=''">
+                AND audit_time <![CDATA[>=]]> #{auditBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="auditEndTime != null and auditEndTime !=''">
+                AND audit_time <![CDATA[<=]]> #{auditEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="stockCheckTaskId != null">
+                AND stock_check_task_id = #{stockCheckTaskId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockCheckTaskDocumentId != null">
+                AND stock_check_task_document_id = #{stockCheckTaskDocumentId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseName != null">
+                AND warehouse_name = #{warehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="operatorId != null">
+                AND operator_id = #{operatorId,jdbcType=VARCHAR}
+            </if>
+            <if test="operatorName != null">
+                AND operator_name = #{operatorName,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="stockCheckTaskType != null">
+                AND stock_check_task_type = #{stockCheckTaskType,jdbcType=TINYINT}
+            </if>
+            <if test="stockCheckOrderType != null">
+                AND stock_check_order_type = #{stockCheckOrderType,jdbcType=TINYINT}
+            </if>
+            <if test="stockCheckOrderStatus != null">
+                AND stock_check_order_status = #{stockCheckOrderStatus,jdbcType=TINYINT}
+            </if>
+            <if test="validStatus != null">
+                AND valid_status = #{validStatus,jdbcType=TINYINT}
+            </if>
+            <if test="businessManId != null">
+                AND business_man_id = #{businessManId,jdbcType=VARCHAR}
+            </if>
+            <if test="businessManName != null">
+                AND business_man_name = #{businessManName,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorId != null">
+                AND auditor_id = #{auditorId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditorName != null">
+                AND auditor_name = #{auditorName,jdbcType=VARCHAR}
+            </if>
+            <if test="auditTime != null">
+                AND audit_time = #{auditTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="inventoryMechanism != null">
+            	AND store_id = #{inventoryMechanism,jdbcType=VARCHAR}
+            </if>
+            <if test="ids != null">
+                AND stock_check_order_id IN (NULL
+                <foreach collection="ids" item="id">
+                    , #{id, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    <delete id="deleteByStockCheckOrderId" parameterType="java.lang.String">
+        DELETE FROM stock_check_order
+        WHERE stock_check_order_id = #{stockCheckOrderId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.hanyun.scm.api.domain.request.stock.StockCheckOrderCreateRequest">
+        INSERT INTO stock_check_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="stockCheckOrderId != null">
+                stock_check_order_id,
+            </if>
+            <if test="stockCheckOrderDocumentId != null">
+                stock_check_order_document_id,
+            </if>
+            <if test="stockCheckTaskId != null">
+                stock_check_task_id,
+            </if>
+            <if test="stockCheckTaskDocumentId != null">
+                stock_check_task_document_id,
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id,
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name,
+            </if>
+            <if test="operatorId != null">
+                operator_id,
+            </if>
+            <if test="operatorName != null">
+                operator_name,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="stockCheckTaskType != null">
+                stock_check_task_type,
+            </if>
+            <if test="stockCheckOrderType != null">
+                stock_check_order_type,
+            </if>
+                stock_check_order_status,
+                valid_status,
+            <if test="businessManId != null">
+                business_man_id,
+            </if>
+            <if test="businessManName != null">
+                business_man_name,
+            </if>
+            <if test="auditorId != null">
+                auditor_id,
+            </if>
+            <if test="auditorName != null">
+                auditor_name,
+            </if>
+            <if test="auditTime != null">
+                audit_time,
+            </if>
+                create_time,
+                update_time
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockCheckOrderId != null">
+                #{stockCheckOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockCheckOrderDocumentId != null">
+                #{stockCheckOrderDocumentId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockCheckTaskId != null">
+                #{stockCheckTaskId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockCheckTaskDocumentId != null">
+                #{stockCheckTaskDocumentId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseId != null">
+                #{warehouseId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorId != null">
+                #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorName != null">
+                #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="stockCheckTaskType != null">
+                #{stockCheckTaskType,jdbcType=TINYINT},
+            </if>
+            <if test="stockCheckOrderType != null">
+                #{stockCheckOrderType,jdbcType=TINYINT},
+            </if>
+                0,
+                0,
+            <if test="businessManId != null">
+                #{businessManId,jdbcType=VARCHAR},
+            </if>
+            <if test="businessManName != null">
+                #{businessManName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditTime != null">
+                #{auditTime,jdbcType=VARCHAR},
+            </if>
+           		NOW(),
+           		NOW()
+        </trim>
+    </insert>
+    <update id="updateByStockCheckOrderId" parameterType="com.hanyun.scm.api.domain.request.stock.StockCheckOrderModifyRequest">
+        UPDATE stock_check_order
+        <set>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockCheckOrderDocumentId != null">
+                stock_check_order_document_id = #{stockCheckOrderDocumentId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockCheckTaskId != null">
+                stock_check_task_id = #{stockCheckTaskId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockCheckTaskDocumentId != null">
+                stock_check_task_document_id = #{stockCheckTaskDocumentId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorId != null">
+                operator_id = #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorName != null">
+                operator_name = #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="stockCheckTaskType != null">
+                stock_check_task_type = #{stockCheckTaskType,jdbcType=TINYINT},
+            </if>
+            <if test="stockCheckOrderType != null">
+                stock_check_order_type = #{stockCheckOrderType,jdbcType=TINYINT},
+            </if>
+            <if test="stockCheckOrderStatus != null">
+                stock_check_order_status = #{stockCheckOrderStatus,jdbcType=TINYINT},
+            </if>
+            <if test="validStatus != null">
+                valid_status = #{validStatus,jdbcType=TINYINT},
+            </if>
+            <if test="businessManId != null">
+                business_man_id = #{businessManId,jdbcType=VARCHAR},
+            </if>
+            <if test="businessManName != null">
+                business_man_name = #{businessManName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                auditor_name = #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditTime != null">
+                audit_time = #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            	update_time = NOW()
+        </set>
+        WHERE stock_check_order_id = #{stockCheckOrderId,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -1,0 +1,1509 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.StockQuantDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.StockQuant">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="stock_quant_id" property="stockQuantId" jdbcType="VARCHAR"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="warehouse_id" property="warehouseId" jdbcType="VARCHAR"/>
+        <result column="goods_id" property="goodsId" jdbcType="VARCHAR"/>
+        <result column="goods_name" property="goodsName" jdbcType="VARCHAR"/>
+        <result column="classify_id" property="classifyId" jdbcType="VARCHAR"/>
+        <result column="classify_name" property="classifyName" jdbcType="VARCHAR"/>
+        <result column="goods_type" property="goodsType" jdbcType="INTEGER"/>
+        <result column="unit_id" property="unitId" jdbcType="VARCHAR"/>
+        <result column="unit_name" property="unitName" jdbcType="VARCHAR"/>
+        <result column="unit_price" property="unitPrice" jdbcType="BIGINT"/>
+        <result column="stock_num" property="stockNum" jdbcType="BIGINT"/>
+        <result column="stock_upper" property="stockUpper" jdbcType="BIGINT"/>
+        <result column="stock_lower" property="stockLower" jdbcType="BIGINT"/>
+        <result column="stock_safe" property="stockSafe" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="goods_bar_code" property="goodsBarCode" jdbcType="VARCHAR"/>
+        <result column="stock_num_usable" property="stockNumUsable" jdbcType="BIGINT"/>
+        <result column="stock_num_using" property="stockNumUsing" jdbcType="BIGINT"/>
+        <result column="stock_num_on_order" property="stockNumOnOrder" jdbcType="BIGINT"/>
+        <result column="goods_code" property="goodsCode" jdbcType="VARCHAR"/>
+        <result column="goods_type_name" property="goodsTypeName" jdbcType="VARCHAR"/>
+        <result column="features" property="features" jdbcType="VARCHAR"/>
+        <result column="goods_brand_name" property="goodsBrandName" jdbcType="VARCHAR"/>
+        <result column="initial_unit_price" property="initialUnitPrice" jdbcType="BIGINT"/>
+        <result column="initial_stock_num" property="initialStockNum" jdbcType="BIGINT"/>
+        <result column="valid_status" property="validStatus" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, stock_quant_id, brand_id, store_id, warehouse_id, goods_id, goods_name, classify_id, classify_name,
+		goods_type, unit_id, unit_name, unit_price, stock_num, stock_upper, stock_lower, stock_safe, create_time,
+		update_time, goods_bar_code, stock_num_usable, stock_num_using, stock_num_on_order, goods_code, goods_type_name,
+		features, goods_brand_name, initial_unit_price, initial_stock_num
+    </sql>
+    <select id="selectByStockQuantId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM stock_quant
+        WHERE stock_quant_id = #{stockQuantId,jdbcType=VARCHAR} AND valid_status = 1
+    </select>
+    <select id="queryDetailGroupCount" resultType="com.hanyun.scm.api.domain.result.StockQuantResult" parameterType="com.hanyun.scm.api.domain.request.stock.StockQuantQueryRequest">
+        SELECT
+        sum(stock_num) AS totalNum
+        FROM stock_quant
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null and goodsId!=''">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="condition != null">
+                AND (goods_bar_code Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_code Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_name Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                )
+            </if>
+            <if test="features !=null and features !=''">
+                AND features LIKE concat('%', #{features,jdbcType=VARCHAR} , '%')
+            </if>
+            AND valid_status = 1
+        </where>
+            GROUP BY goods_id
+        <if test="minAmount !=null or maxAmount !=null">
+            HAVING
+        </if>
+        <if test="minAmount !=null">
+            totalNum <![CDATA[>=]]> #{minAmount,jdbcType=BIGINT}
+        </if>
+        <if test="minAmount !=null and maxAmount !=null">
+            AND
+        </if>
+        <if test="maxAmount !=null">
+            totalNum <![CDATA[<=]]> #{maxAmount,jdbcType=BIGINT}
+        </if>
+    </select>
+
+    <select id="queryDetailCount" resultType="java.lang.Integer" parameterType="com.hanyun.scm.api.domain.request.stock.StockQuantQueryRequest">
+        SELECT count(*)
+        FROM stock_quant
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null and goodsId!=''">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="condition != null">
+                AND (goods_bar_code Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_code Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_name Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                )
+            </if>
+            <if test="features !=null and features !=''">
+                AND features LIKE concat('%', #{features,jdbcType=VARCHAR} , '%')
+            </if>
+            <if test="minAmount !=null">
+                AND stock_num <![CDATA[>=]]> #{minAmount,jdbcType=BIGINT}
+            </if>
+            <if test="maxAmount !=null">
+                AND stock_num <![CDATA[<=]]> #{maxAmount,jdbcType=BIGINT}
+            </if>
+            AND valid_status = 1
+        </where>
+    </select>
+    
+    <select id="queryDetail" resultType="com.hanyun.scm.api.domain.result.StockQuantResult" parameterType="com.hanyun.scm.api.domain.request.stock.StockQuantQueryRequest">
+        SELECT
+        id, stock_quant_id stockQuantId, brand_id, store_id, warehouse_id warehouseId, goods_id goodsId, goods_name goodsName, classify_id classifyId, classify_name classifyName,
+        goods_type, unit_id, unit_name unitName, unit_price unitPrice, stock_num stockNum, stock_upper, stock_lower, stock_safe, create_time,
+        initial_unit_price initialUnitPrice, initial_stock_num initialStockNum,
+        update_time, goods_bar_code goodsBarCode, stock_num_usable, stock_num_using, stock_num_on_order, goods_code goodsCode, goods_type_name, features features,goods_brand_name
+        FROM stock_quant
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null and goodsId!=''">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="condition != null">
+                AND (goods_bar_code Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_code Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_name Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                )
+            </if>
+            <if test="features !=null and features !=''">
+                AND features LIKE concat('%', #{features,jdbcType=VARCHAR} , '%')
+            </if>
+            <if test="minAmount !=null">
+                AND stock_num <![CDATA[>=]]> #{minAmount,jdbcType=BIGINT}
+            </if>
+            <if test="maxAmount !=null">
+                AND stock_num <![CDATA[<=]]> #{maxAmount,jdbcType=BIGINT}
+            </if>
+            AND valid_status = 1
+        </where>
+        ORDER BY stock_num ASC
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="queryDetailGroupList" resultType="com.hanyun.scm.api.domain.result.StockQuantResult" parameterType="com.hanyun.scm.api.domain.request.stock.StockQuantQueryRequest">
+        SELECT
+        id, stock_quant_id stockQuantId, brand_id, store_id, warehouse_id warehouseId, goods_id goodsId, goods_name goodsName, classify_id classifyId, classify_name classifyName,
+        goods_type, unit_id, unit_name unitName, sum(unit_price * stock_num)  totalCash, sum(stock_num) AS totalNum, sum(unit_price * stock_num)/sum(stock_num) totalUnitPrice,
+        stock_upper, stock_lower, stock_safe, create_time,
+        initial_stock_num initialStockNum, initial_unit_price initialUnitPrice,
+        sum(initial_stock_num * initial_unit_price) initialTotalCash, sum(initial_stock_num) initinalTotalNum, sum(initial_stock_num * initial_unit_price)/sum(initial_stock_num) initinalTotalPrice,
+        update_time, goods_bar_code goodsBarCode, stock_num_usable, stock_num_using, stock_num_on_order, goods_code goodsCode, goods_type_name, features features,goods_brand_name
+        FROM stock_quant
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null and goodsId!=''">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="condition != null">
+                AND (goods_bar_code Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_code Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_name Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                )
+            </if>
+            <if test="features !=null and features !=''">
+                AND features LIKE concat('%', #{features,jdbcType=VARCHAR} , '%')
+            </if>
+            AND valid_status = 1
+        GROUP BY goods_id
+        </where>
+        <if test="minAmount !=null or maxAmount !=null">
+            HAVING
+        </if>
+        <if test="minAmount !=null">
+            totalNum <![CDATA[>=]]> #{minAmount,jdbcType=BIGINT}
+        </if>
+        <if test="minAmount !=null and maxAmount !=null">
+            AND
+        </if>
+        <if test="maxAmount !=null">
+            totalNum <![CDATA[<=]]> #{maxAmount,jdbcType=BIGINT}
+        </if>
+        ORDER BY totalNum ASC
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="countAllDetial" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        SELECT count(*)
+        FROM stock_quant
+        <where>
+            <if test="stockQuantId != null">
+                AND stock_quant_id = #{stockQuantId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyId != null and classifyId!=''">
+                AND classify_id = #{classifyId, jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null and goodsId!=''">
+                AND goods_id LIKE concat('%', #{goodsId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsName != null">
+                AND goods_name LIKE concat('%', #{goodsName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsType != null">
+                AND goods_type = #{goodsType, jdbcType=TINYINT}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="stockNum != null">
+                AND stock_num = #{stockNum,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="planBeginTime != null and planBeginTime != ''">
+                AND create_time <![CDATA[>=]]> #{planBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="planEndTime != null and planEndTime !=''">
+                AND create_time <![CDATA[<=]]> #{planEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime !=''">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="goodsBrandName != null">
+                AND goods_brand_name = #{goodsBrandName,jdbcType=VARCHAR}
+            </if>
+            <if test="initialUnitPrice != null">
+                AND initial_unit_price = #{initialUnitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="initialStockNum != null">
+                AND initial_stock_num = #{initialStockNum,jdbcType=BIGINT}
+            </if>
+            <if test="goodsBarCode != null">
+                AND (goods_bar_code LIKE concat('%', #{goodsBarCode,jdbcType=VARCHAR}, '%')
+                OR goods_name LIKE concat('%', #{goodsBarCode,jdbcType=VARCHAR}, '%') 
+                )
+            </if>
+            <if test="goodsCode != null">
+                AND (goods_code LIKE concat('%', #{goodsCode,jdbcType=VARCHAR}, '%') 
+                OR goods_name LIKE concat('%', #{goodsCode,jdbcType=VARCHAR}, '%')
+                )
+            </if>
+            <if test="skipIdList != null">
+                AND goods_id NOT IN (
+                <foreach collection="skipIdList" item="skipId" separator=",">
+                    #{skipId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            <if test="classfiyIdList != null">
+                AND classify_id IN (
+                <foreach collection="classfiyIdList" item="ids" separator=",">
+                    #{ids, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            AND valid_status = 1
+        </where>
+        GROUP BY  warehouse_id, goods_id
+        ORDER BY id DESC 
+    </select>
+    
+     <select id="countAllGoods" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        SELECT count(*)
+        FROM stock_quant
+        <where>
+        		stock_num &gt; 0
+            <if test="stockQuantId != null">
+                AND stock_quant_id = #{stockQuantId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyId != null and classifyId!=''">
+                AND classify_id = #{classifyId, jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null and goodsId!=''">
+                AND goods_id LIKE concat('%', #{goodsId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsName != null">
+                AND goods_name LIKE concat('%', #{goodsName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsType != null">
+                AND goods_type = #{goodsType, jdbcType=TINYINT}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="stockNum != null">
+                AND stock_num = #{stockNum,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="planBeginTime != null and planBeginTime != ''">
+                AND create_time <![CDATA[>=]]> #{planBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="planEndTime != null and planEndTime !=''">
+                AND create_time <![CDATA[<=]]> #{planEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime !=''">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code LIKE concat('%', #{goodsBarCode,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="initialUnitPrice != null">
+                AND initial_unit_price = #{initialUnitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="initialStockNum != null">
+                AND initial_stock_num = #{initialStockNum,jdbcType=BIGINT}
+            </if>
+            <if test="skipIdList != null">
+                AND goods_id NOT IN (
+                <foreach collection="skipIdList" item="skipId" separator=",">
+                    #{skipId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            AND valid_status = 1
+        </where>
+        GROUP BY goods_id
+    </select>
+    <select id="selectGoods" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM stock_quant
+        <where>
+        	stock_num &gt; 0
+            <if test="stockQuantId != null">
+                AND stock_quant_id = #{stockQuantId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null">
+                AND goods_id LIKE concat('%', #{goodsId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsName != null">
+                AND goods_name LIKE concat('%', #{goodsName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="classifyId != null">
+                AND classify_id = #{classifyId, jdbcType=VARCHAR}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="stockNum != null">
+                AND stock_num = #{stockNum,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="planBeginTime != null and planBeginTime != ''">
+                AND create_time <![CDATA[>=]]> #{planBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="planEndTime != null and planEndTime !=''">
+                AND create_time <![CDATA[<=]]> #{planEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code LIKE concat('%', #{goodsBarCode,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="initialUnitPrice != null">
+                AND initial_unit_price = #{initialUnitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="initialStockNum != null">
+                AND initial_stock_num = #{initialStockNum,jdbcType=BIGINT}
+            </if>
+            <if test="skipIdList != null">
+                AND goods_id NOT IN (
+                <foreach collection="skipIdList" item="skipId" separator=",">
+                    #{skipId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            <if test="idList != null">
+                AND goods_id IN (
+                <foreach collection="idList" item="id" separator=",">
+                    #{id, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            AND valid_status = 1
+        </where>
+        GROUP BY goods_id
+        ORDER BY create_time, stock_quant_id DESC
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    
+    <select id="countAll" resultType="java.lang.Integer" parameterType="com.hanyun.scm.api.domain.request.stock.StockQuantQueryRequest">
+        SELECT count(*)
+        FROM stock_quant
+        <where>
+            <if test="stockQuantId != null">
+                AND stock_quant_id = #{stockQuantId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null and goodsId !=''">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsName != null">
+                AND goods_name LIKE concat('%', #{goodsName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="condition != null">
+                AND (goods_bar_code Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_code Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_name Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                )
+            </if>
+            <if test="goodsType != null">
+                AND goods_type = #{goodsType, jdbcType=TINYINT}
+            </if>
+            <if test="classifyId != null and classifyId !=''">
+                AND classify_id = #{classifyId, jdbcType=VARCHAR}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="stockNum != null">
+                AND stock_num = #{stockNum,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="planBeginTime != null and planBeginTime != ''">
+                AND create_time <![CDATA[>=]]> #{planBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="planEndTime != null and planEndTime !=''">
+                AND create_time <![CDATA[<=]]> #{planEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="stockStatus == 1">
+                AND stock_num <![CDATA[<]]> stock_lower
+            </if>
+            <if test="stockStatus == 2">
+                AND stock_num <![CDATA[<]]> stock_safe
+            </if>
+            <if test="stockStatus == 3">
+                AND stock_num <![CDATA[>]]> stock_upper
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code = #{goodsBarCode,jdbcType=VARCHAR}
+            </if>
+            <if test="initialUnitPrice != null">
+                AND initial_unit_price = #{initialUnitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="initialStockNum != null">
+                AND initial_stock_num = #{initialStockNum,jdbcType=BIGINT}
+            </if>
+            <if test="skipIdList != null">
+                AND goods_id NOT IN (
+                <foreach collection="skipIdList" item="skipId" separator=",">
+                    #{skipId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            <if test="idList != null">
+                AND goods_id IN (NULL
+                <foreach collection="idList" item="id">
+                    , #{id, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            AND valid_status = 1
+        </where>
+        <if test="choose != null">
+        	GROUP BY goods_id
+        </if>
+    </select>
+    
+    <select id="select" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.request.stock.StockQuantQueryRequest">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM stock_quant
+        <where>
+            <if test="stockQuantId != null">
+                AND stock_quant_id = #{stockQuantId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null and goodsId != ''">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsName != null">
+                AND goods_name LIKE concat('%', #{goodsName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsType != null">
+                AND goods_type = #{goodsType, jdbcType=TINYINT}
+            </if>
+            <if test="classifyId != null and classifyId != ''">
+                AND classify_id = #{classifyId, jdbcType=VARCHAR}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="stockNum != null">
+                AND stock_num = #{stockNum,jdbcType=BIGINT} 
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="planBeginTime != null and planBeginTime != ''">
+                AND create_time <![CDATA[>=]]> #{planBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="planEndTime != null and planEndTime !=''">
+                AND create_time <![CDATA[<=]]> #{planEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code = #{goodsBarCode,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsCode != null">
+                AND goods_code = #{goodsCode,jdbcType=VARCHAR}
+            </if>
+            <if test="initialUnitPrice != null">
+                AND initial_unit_price = #{initialUnitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="initialStockNum != null">
+                AND initial_stock_num = #{initialStockNum,jdbcType=BIGINT}
+            </if>
+            <if test="condition != null">
+                AND (goods_bar_code Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_code Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                OR goods_name Like concat(#{condition,jdbcType=VARCHAR}, '%')
+                )
+            </if>
+            <if test="stockStatus == 1">
+                AND stock_num <![CDATA[<]]> stock_lower
+            </if>
+            <if test="stockStatus == 2">
+                AND stock_num <![CDATA[<]]> stock_safe
+            </if>
+            <if test="stockStatus == 3">
+                AND stock_num <![CDATA[>]]> stock_upper
+            </if>
+            <if test="skipIdList != null">
+                AND goods_id NOT IN (
+                <foreach collection="skipIdList" item="skipId" separator=",">
+                    #{skipId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            <if test="idList != null">
+                AND goods_id IN (NULL
+                <foreach collection="idList" item="id">
+                    , #{id, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            AND valid_status = 1
+        </where>
+        ORDER BY id DESC
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    
+    
+    
+    
+    
+    <select id="queryWarehouseId" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.request.stock.StockQuantQueryRequest">
+        SELECT
+        brand_id, store_id, warehouse_id, goods_id, goods_name, classify_id, classify_name,
+		goods_type, unit_id, unit_name, avg(unit_price) as unit_price, sum(stock_num) as stock_num,
+		goods_bar_code,goods_code, goods_type_name, features,goods_brand_name,initial_unit_price,initial_stock_num
+        FROM stock_quant
+        <where>
+        	<if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>           
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            AND valid_status = 1
+        </where>
+        GROUP BY goods_id
+    </select>
+    
+    
+    
+    
+    
+    
+    
+    <select id="selectAllocationGoods" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM stock_quant
+        <where>
+            <if test="stockQuantId != null">
+                AND stock_quant_id = #{stockQuantId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null and goodsId != ''">
+                AND goods_id LIKE concat('%', #{goodsId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsName != null">
+                AND goods_name LIKE concat('%', #{goodsName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsType != null">
+                AND goods_type = #{goodsType, jdbcType=TINYINT}
+            </if>
+            <if test="classifyId != null and classifyId != ''">
+                AND classify_id = #{classifyId, jdbcType=VARCHAR}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="stockNum != null">
+                AND stock_num = #{stockNum,jdbcType=BIGINT} 
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="planBeginTime != null and planBeginTime != ''">
+                AND create_time <![CDATA[>=]]> #{planBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="planEndTime != null and planEndTime !=''">
+                AND create_time <![CDATA[<=]]> #{planEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code = #{goodsBarCode,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsTypeName != null">
+                AND goods_type_name = #{goodsTypeName,jdbcType=VARCHAR}
+            </if>
+            <if test="initialUnitPrice != null">
+                AND initial_unit_price = #{initialUnitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="initialStockNum != null">
+                AND initial_stock_num = #{initialStockNum,jdbcType=BIGINT}
+            </if>
+             <if test="condition != null">
+                AND (
+                goods_code LIKE concat('%', #{condition,jdbcType=VARCHAR}, '%')
+                OR
+                goods_bar_code LIKE concat('%', #{condition,jdbcType=VARCHAR}, '%')
+                OR
+                goods_name LIKE concat('%', #{condition,jdbcType=VARCHAR}, '%')
+                )
+            </if>
+            <if test="skipIdList != null">
+                AND goods_id NOT IN (
+                <foreach collection="skipIdList" item="skipId" separator=",">
+                    #{skipId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            <if test="idList != null">
+                AND goods_id IN (
+                <foreach collection="idList" item="id" separator=",">
+                    #{id, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            AND valid_status = 1
+        </where>
+        ORDER BY create_time, stock_quant_id DESC
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    
+    <select id="selectProductClassfily" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM stock_quant
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            AND valid_status = 1
+        </where>
+        GROUP BY classify_id
+    </select>
+    <select id="countAllocationGoods" resultType="java.lang.Integer" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        SELECT count(*)
+        FROM stock_quant
+        <where>
+            <if test="stockQuantId != null">
+                AND stock_quant_id = #{stockQuantId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null and goodsId != ''">
+                AND goods_id LIKE concat('%', #{goodsId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsName != null">
+                AND goods_name LIKE concat('%', #{goodsName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsType != null">
+                AND goods_type = #{goodsType, jdbcType=TINYINT}
+            </if>
+            <if test="classifyId != null and classifyId != ''">
+                AND classify_id = #{classifyId, jdbcType=VARCHAR}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="stockNum != null">
+                AND stock_num = #{stockNum,jdbcType=BIGINT} 
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="planBeginTime != null and planBeginTime != ''">
+                AND create_time <![CDATA[>=]]> #{planBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="planEndTime != null and planEndTime !=''">
+                AND create_time <![CDATA[<=]]> #{planEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code = #{goodsBarCode,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsTypeName != null">
+                AND goods_type_name = #{goodsTypeName,jdbcType=VARCHAR}
+            </if>
+            <if test="initialUnitPrice != null">
+                AND initial_unit_price = #{initialUnitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="initialStockNum != null">
+                AND initial_stock_num = #{initialStockNum,jdbcType=BIGINT}
+            </if>
+             <if test="condition != null">
+                AND (
+                goods_code LIKE concat('%', #{condition,jdbcType=VARCHAR}, '%')
+                OR
+                goods_bar_code LIKE concat('%', #{condition,jdbcType=VARCHAR}, '%')
+                OR
+                goods_name LIKE concat('%', #{condition,jdbcType=VARCHAR}, '%')
+                )
+            </if>
+            <if test="skipIdList != null">
+                AND goods_id NOT IN (
+                <foreach collection="skipIdList" item="skipId" separator=",">
+                    #{skipId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            <if test="idList != null">
+                AND goods_id IN (
+                <foreach collection="idList" item="id" separator=",">
+                    #{id, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            AND valid_status = 1
+        </where>
+    </select>
+    
+    <select id="selectALL" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        SELECT
+        sum(stock_num) as resutNum,warehouse_id,stock_upper, stock_lower, stock_safe
+        FROM stock_quant
+        <where>
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null">
+                AND goods_id = #{goodsId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            AND valid_status = 1
+        </where>
+		GROUP BY warehouse_id
+    </select>
+    <select id="selectDetail" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        SELECT
+        sum(stock_num) as totalNum,stock_quant_id, brand_id, store_id, warehouse_id, goods_id, goods_name, classify_id, classify_name,
+		goods_type, unit_id, unit_name, unit_price, stock_num, stock_upper, stock_lower, stock_safe, create_time,
+		update_time, goods_bar_code, stock_num_usable, stock_num_using, stock_num_on_order, goods_code, goods_type_name, features,goods_brand_name
+        FROM stock_quant
+        <where>
+            <if test="stockQuantId != null">
+                AND stock_quant_id = #{stockQuantId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="classifyId != null and classifyId!=''">
+                AND classify_id = #{classifyId, jdbcType=VARCHAR}
+            </if>
+            <if test="goodsType != null">
+                AND goods_type = #{goodsType, jdbcType=TINYINT}
+            </if>
+            <if test="goodsId != null and goodsId !=''">
+                AND goods_id LIKE concat('%', #{goodsId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="goodsName != null">
+                AND goods_name LIKE concat('%', #{goodsName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="stockNum != null">
+                AND stock_num = #{stockNum,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="planBeginTime != null and planBeginTime != ''">
+                AND create_time <![CDATA[>=]]> #{planBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="planEndTime != null and planEndTime !=''">
+                AND create_time <![CDATA[<=]]> #{planEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="initialUnitPrice != null">
+                AND initial_unit_price = #{initialUnitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="initialStockNum != null">
+                AND initial_stock_num = #{initialStockNum,jdbcType=BIGINT}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="goodsBrandName != null">
+                AND goods_brand_name= #{goodsBrandName,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsCode != null">
+                AND (goods_code LIKE concat('%', #{goodsCode,jdbcType=VARCHAR}, '%') 
+                OR goods_name LIKE concat('%', #{goodsCode,jdbcType=VARCHAR}, '%')
+                )
+            </if>
+            <if test="classfiyIdList != null">
+                AND classify_id IN (
+                <foreach collection="classfiyIdList" item="ids" separator=",">
+                    #{ids, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            AND valid_status = 1
+        </where>
+        GROUP BY  warehouse_id ,goods_id
+        ORDER BY id DESC
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    <delete id="deleteByStockQuantId" parameterType="java.lang.String">
+        DELETE FROM stock_quant
+        WHERE stock_quant_id = #{stock_quant_id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insertSelective" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        INSERT INTO stock_quant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stockQuantId != null">
+                stock_quant_id,
+            </if>
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id,
+            </if>
+            <if test="goodsId != null">
+                goods_id,
+            </if>
+            <if test="goodsName != null">
+                goods_name,
+            </if>
+            <if test="classifyId != null">
+                classify_id,
+            </if>
+            <if test="classifyName != null">
+                classify_name,
+            </if>
+            <if test="goodsType != null">
+                goods_type,
+            </if>
+            <if test="unitId != null">
+                unit_id,
+            </if>
+            <if test="unitName != null">
+                unit_name,
+            </if>
+            <if test="unitPrice != null">
+                unit_price,
+            </if>
+            <if test="stockNum != null">
+                stock_num,
+            </if>
+            <if test="stockUpper != null">
+                stock_upper,
+            </if>
+            <if test="stockLower != null">
+                stock_lower,
+            </if>
+            <if test="stockSafe != null">
+                stock_safe,
+            </if>
+            <if test="goodsBarCode != null">
+                goods_bar_code,
+            </if>
+            <if test="goodsCode != null">
+                goods_code,
+            </if>
+            <if test="goodsTypeName != null">
+                goods_type_name,
+            </if>
+            <if test="features != null">
+                features,
+            </if>
+            <if test="goodsBrandName != null">
+                goods_brand_name,
+            </if>
+            <if test="initialUnitPrice != null">
+                initial_unit_price,
+            </if>
+            <if test="initialStockNum != null">
+                initial_stock_num,
+            </if>
+            create_time,
+            update_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stockQuantId != null">
+                #{stockQuantId,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseId != null">
+                #{warehouseId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsId != null">
+                #{goodsId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyId != null">
+                #{classifyId,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyName != null">
+                #{classifyName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsType != null">
+                #{goodsType,jdbcType=TINYINT},
+            </if>
+            <if test="unitId != null">
+                #{unitId,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null">
+                #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                #{unitPrice,jdbcType=BIGINT},
+            </if>
+            <if test="stockNum != null">
+                #{stockNum,jdbcType=BIGINT},
+            </if>
+            <if test="stockUpper != null">
+                #{stockUpper,jdbcType=BIGINT},
+            </if>
+            <if test="stockLower != null">
+                #{stockLower,jdbcType=BIGINT},
+            </if>
+            <if test="stockSafe != null">
+                #{stockSafe,jdbcType=BIGINT},
+            </if>
+            <if test="goodsBarCode != null">
+                #{goodsBarCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                #{goodsCode, jdbcType=VARCHAR},
+            </if>
+            <if test="goodsTypeName != null">
+                #{goodsTypeName, jdbcType=VARCHAR},
+            </if>
+            <if test="features != null">
+                #{features, jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBrandName != null">
+                #{goodsBrandName, jdbcType=VARCHAR},
+            </if>
+            <if test="initialUnitPrice != null">
+                #{initialUnitPrice,jdbcType=BIGINT},
+            </if>
+            <if test="initialStockNum != null">
+                #{initialStockNum,jdbcType=BIGINT},
+            </if>
+            NOW(),
+            NOW()
+        </trim>
+    </insert>
+    
+    <update id="updateByStockQuantGoodsIDorWarehouseId" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        UPDATE stock_quant
+        <set>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                goods_name = #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitId != null">
+                unit_id = #{unitId,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null">
+                unit_name = #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice,jdbcType=BIGINT},
+            </if>
+            <if test="stockNum != null">
+                stock_num = #{stockNum,jdbcType=BIGINT},
+            </if>
+            <if test="stockUpper != null">
+                stock_upper = #{stockUpper,jdbcType=BIGINT},
+            </if>
+            <if test="stockLower != null">
+                stock_lower = #{stockLower,jdbcType=BIGINT},
+            </if>
+            <if test="initialUnitPrice != null">
+                initial_unit_price = #{initialUnitPrice,jdbcType=BIGINT},
+            </if>
+            <if test="initialStockNum != null">
+                initial_stock_num = #{initialStockNum,jdbcType=BIGINT},
+            </if>
+            <if test="stockSafe != null">
+                stock_safe = #{stockSafe,jdbcType=BIGINT},
+            </if>
+            update_time = NOW(),
+            <if test="goodsBarCode != null">
+               goods_bar_code =  #{goodsBarCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBrandName != null">
+                goods_brand_name = #{goodsBrandName, jdbcType=VARCHAR},
+            </if>
+            <if test="features != null">
+                features = #{features, jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE goods_id = #{goodsId,jdbcType=VARCHAR} AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}	
+    </update>
+    <update id="updateByStockQuantId" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        UPDATE stock_quant
+        <set>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsId != null">
+                goods_id = #{goodsId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                goods_name = #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitId != null">
+                unit_id = #{unitId,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null">
+                unit_name = #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice,jdbcType=BIGINT},
+            </if>
+            <if test="stockNum != null">
+                stock_num = #{stockNum,jdbcType=BIGINT},
+            </if>
+            <if test="stockUpper != null">
+                stock_upper = #{stockUpper,jdbcType=BIGINT},
+            </if>
+            <if test="stockLower != null">
+                stock_lower = #{stockLower,jdbcType=BIGINT},
+            </if>
+            <if test="stockSafe != null">
+                stock_safe = #{stockSafe,jdbcType=BIGINT},
+            </if>
+            <if test="initialUnitPrice != null">
+                initial_unit_price = #{initialUnitPrice,jdbcType=BIGINT},
+            </if>
+            <if test="initialStockNum != null">
+                initial_stock_num = #{initialStockNum,jdbcType=BIGINT},
+            </if>
+            update_time = NOW(),
+            <if test="goodsBarCode != null">
+               goods_bar_code =  #{goodsBarCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsBrandName != null">
+                goods_brand_name = #{goodsBrandName, jdbcType=VARCHAR},
+            </if>
+            <if test="features != null">
+                features = #{features, jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE stock_quant_id = #{stockQuantId,jdbcType=VARCHAR}
+    </update>
+
+	<select id="countAllList" resultType="java.lang.Integer" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        SELECT count(*)
+        FROM stock_quant
+        <where>
+            <if test="stockQuantId != null">
+                AND stock_quant_id = #{stockQuantId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null and goodsId != ''">
+                AND (goods_id LIKE concat('%', #{goodsId,jdbcType=VARCHAR}, '%') 
+                OR goods_name LIKE concat('%', #{goodsId,jdbcType=VARCHAR}, '%'))
+            </if>
+<!--             <if test="goodsName != null"> -->
+<!--                 AND goods_name LIKE concat('%', #{goodsName,jdbcType=VARCHAR}, '%') -->
+<!--             </if> -->
+            <if test="goodsType != null">
+                AND goods_type = #{goodsType, jdbcType=TINYINT}
+            </if>
+            <if test="classifyId != null and classifyId !=''">
+                AND classify_id = #{classifyId, jdbcType=VARCHAR}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="stockNum != null">
+                AND stock_num = #{stockNum,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="planBeginTime != null and planBeginTime != ''">
+                AND create_time <![CDATA[>=]]> #{planBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="planEndTime != null and planEndTime !=''">
+                AND create_time <![CDATA[<=]]> #{planEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="stockStatus == 1">
+                AND stock_num <![CDATA[<]]> stock_lower
+            </if>
+            <if test="stockStatus == 2">
+                AND stock_num <![CDATA[<]]> stock_safe
+            </if>
+            <if test="stockStatus == 3">
+                AND stock_num <![CDATA[>]]> stock_upper
+            </if>
+            <if test="initialUnitPrice != null">
+                AND initial_unit_price = #{initialUnitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="initialStockNum != null">
+                AND initial_stock_num = #{initialStockNum,jdbcType=BIGINT}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code LIKE concat('%', #{goodsBarCode,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="skipIdList != null">
+                AND goods_id NOT IN (
+                <foreach collection="skipIdList" item="skipId" separator=",">
+                    #{skipId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            <if test="idList != null">
+                AND goods_id IN (
+                <foreach collection="idList" item="id" separator=",">
+                    #{id, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            AND valid_status = 1
+        </where>
+        <if test="choose != null">
+        	GROUP BY goods_id
+        </if>
+    </select>
+    
+    
+    <select id="selectGoodsList" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM stock_quant
+        <where>
+            <if test="stockQuantId != null">
+                AND stock_quant_id = #{stockQuantId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null and goodsId !=''">
+                AND (goods_id LIKE concat('%', #{goodsId,jdbcType=VARCHAR}, '%') OR goods_name LIKE concat('%', #{goodsId,jdbcType=VARCHAR}, '%'))
+            </if>
+            <if test="classifyId != null">
+                AND classify_id = #{classifyId, jdbcType=VARCHAR}
+            </if>
+            <if test="unitId != null">
+                AND unit_id = #{unitId,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitPrice != null">
+                AND unit_price = #{unitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="stockNum != null">
+                AND stock_num = #{stockNum,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="planBeginTime != null and planBeginTime != ''">
+                AND create_time <![CDATA[>=]]> #{planBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="planEndTime != null and planEndTime !=''">
+                AND create_time <![CDATA[<=]]> #{planEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="goodsBarCode != null">
+                AND goods_bar_code LIKE concat('%', #{goodsBarCode,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="initialUnitPrice != null">
+                AND initial_unit_price = #{initialUnitPrice,jdbcType=BIGINT}
+            </if>
+            <if test="initialStockNum != null">
+                AND initial_stock_num = #{initialStockNum,jdbcType=BIGINT}
+            </if>
+            <if test="skipIdList != null">
+                AND goods_id NOT IN (
+                <foreach collection="skipIdList" item="skipId" separator=",">
+                    #{skipId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            <if test="idList != null">
+                AND goods_id IN (
+                <foreach collection="idList" item="id" separator=",">
+                    #{id, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+            AND valid_status = 1
+        </where>
+        GROUP BY goods_id
+        ORDER BY create_time, stock_quant_id DESC
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="selectALLGoodsBrand" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        SELECT
+        goods_brand_name
+        FROM stock_quant
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            AND valid_status = 1
+        </where>
+		GROUP BY goods_brand_name
+    </select>
+    <select id="totalStock" parameterType="com.hanyun.scm.api.domain.request.BrandStoreRequest" resultType="com.hanyun.scm.api.domain.response.stock.TotalStockResponse">
+        SELECT sum(unit_price * stock_num) totalCash, sum(stock_num) totalAmount
+        FROM hy_erp.stock_quant
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId, jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId, jdbcType=VARCHAR}
+            </if>
+            AND valid_status = 1
+        </where>
+    </select>
+    <delete id="deleteStockQuant" parameterType="com.hanyun.scm.api.domain.StockQuant">
+        DELETE FROM stock_quant
+        <where>
+            AND brand_id = #{brandId, jdbcType=VARCHAR}
+            <if test="warehouseId != null">
+                AND warehouse_id = #{warehouseId, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </delete>
+    <select id="selectWarehouseGoods" parameterType="com.hanyun.scm.api.domain.StockQuant" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM stock_quant
+        <where>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseId != null and warehouseId !=''">
+                AND warehouse_id = #{warehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsId != null and goodsId != ''">
+                AND goods_id = #{goodsId, jdbcType=VARCHAR}
+            </if>
+            AND valid_status = 1
+        </where>
+        ORDER BY id DESC
+    </select>
+    <select id="selectStoreGoods" parameterType="com.hanyun.scm.api.domain.request.stock.StoreGoodsStock" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM stock_quant
+        <where>
+            AND brand_id = #{brandId, jdbcType=VARCHAR}
+            AND store_id = #{storeId, jdbcType=VARCHAR}
+            AND goods_id in (
+            <foreach collection="goodsIds" item="goodsId" separator=",">
+                #{goodsId, jdbcType=VARCHAR}
+            </foreach>
+            )
+            AND valid_status = 1
+        </where>
+    </select>
+    <update id="invalidStock" parameterType="java.lang.String">
+        UPDATE stock_quant
+        SET valid_status = 0
+        WHERE stock_quant_id = #{stockQuantId, jdbcType=VARCHAR}
+    </update>
+</mapper>

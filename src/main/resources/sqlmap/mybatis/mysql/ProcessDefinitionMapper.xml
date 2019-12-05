@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.ProcessDefinitionDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.ProcessDefinition">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="process_id" property="processId" jdbcType="VARCHAR"/>
+        <result column="process_name" property="processName" jdbcType="VARCHAR"/>
+        <result column="activiti_process_id" property="activitiProcessId" jdbcType="VARCHAR"/>
+        <result column="activiti_super_process_id" property="activitiSuperProcessId" jdbcType="VARCHAR"/>
+        <result column="process_type" property="processType" jdbcType="TINYINT"/>
+        <result column="process_status" property="processStatus" jdbcType="BIT"/>
+        <result column="cash_top_limit" property="cashTopLimit" jdbcType="BIGINT"/>
+        <result column="super_auditor_id" property="superAuditorId" jdbcType="VARCHAR"/>
+        <result column="super_auditor_name" property="superAuditorName" jdbcType="VARCHAR"/>
+        <result column="super_status" property="superStatus" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, brand_id, process_id, process_name, activiti_process_id, activiti_super_process_id, process_type, process_status, cash_top_limit, super_auditor_id, super_auditor_name, super_status, create_time, update_time
+    </sql>
+    <select id="selectByProcessId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM process_definition
+        WHERE process_id = #{id,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByProcessType" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM process_definition
+        WHERE process_type = #{processType, jdbcType=TINYINT}
+        AND brand_id = #{brandId, jdbcType=VARCHAR}
+        ORDER BY id DESC
+        LIMIT 0, 1
+    </select>
+    <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.request.process.definition.ProcessDefinitionQueryRequest">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM process_definition
+        <where>
+            AND brand_id = #{brandId, jdbcType=VARCHAR}
+        </where>
+    </select>
+    <delete id="deleteByProcessId" parameterType="java.lang.String">
+        DELETE FROM process_definition
+        WHERE process_id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insertSelective" parameterType="com.hanyun.scm.api.domain.request.process.definition.ProcessDefinitionCreateRequest">
+        INSERT INTO process_definition
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="processId != null">
+                process_id,
+            </if>
+            <if test="processName != null">
+                process_name,
+            </if>
+            <if test="activitiProcessId != null">
+                activiti_process_id,
+            </if>
+            <if test="activitiSuperProcessId != null">
+                activiti_super_process_id,
+            </if>
+            <if test="processType != null">
+                process_type,
+            </if>
+            <if test="cashTopLimit != null">
+                cash_top_limit,
+            </if>
+            <if test="superAuditorId != null">
+                super_auditor_id,
+            </if>
+            <if test="superAuditorName != null">
+                super_auditor_name,
+            </if>
+            <if test="superStatus != null">
+                super_status,
+            </if>
+            process_status,
+            create_time,
+            update_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="brandId != null">
+                #{brandId, jdbcType=VARCHAR},
+            </if>
+            <if test="processId != null">
+                #{processId,jdbcType=VARCHAR},
+            </if>
+            <if test="processName != null">
+                #{processName,jdbcType=VARCHAR},
+            </if>
+            <if test="activitiProcessId != null">
+                #{activitiProcessId,jdbcType=VARCHAR},
+            </if>
+            <if test="activitiSuperProcessId != null">
+                #{activitiSuperProcessId, jdbcType=VARCHAR},
+            </if>
+            <if test="processType != null">
+                #{processType,jdbcType=TINYINT},
+            </if>
+            <if test="cashTopLimit != null">
+                #{cashTopLimit, jdbcType=BIGINT},
+            </if>
+            <if test="superAuditorId != null">
+                #{superAuditorId, jdbcType=VARCHAR},
+            </if>
+            <if test="superAuditorName != null">
+                #{superAuditorName, jdbcType=VARCHAR},
+            </if>
+            <if test="superStatus != null">
+                #{superStatus, jdbcType=TINYINT},
+            </if>
+            <choose>
+                <when test="processStatus != null">
+                    #{processStatus, jdbcType=TINYINT},
+                </when>
+                <otherwise>
+                    1,
+                </otherwise>
+            </choose>
+            NOW(),
+            NOW(),
+        </trim>
+    </insert>
+    <update id="updateByProcessIdSelective" parameterType="com.hanyun.scm.api.domain.request.process.definition.ProcessDefinitionModifyRequest">
+        UPDATE process_definition
+        <set>
+            <if test="processId != null">
+                process_id = #{processId,jdbcType=VARCHAR},
+            </if>
+            <if test="processName != null">
+                process_name = #{processName,jdbcType=VARCHAR},
+            </if>
+            <if test="activitiProcessId != null">
+                activiti_process_id = #{activitiProcessId,jdbcType=VARCHAR},
+            </if>
+            <if test="processType != null">
+                process_type = #{processType,jdbcType=TINYINT},
+            </if>
+            <if test="processStatus != null">
+                process_status = #{processStatus,jdbcType=BIT},
+            </if>
+            <if test="cashTopLimit != null">
+                cash_top_limit = #{cashTopLimit, jdbcType=BIGINT},
+            </if>
+            <if test="superAuditorId != null">
+                super_auditor_id = #{superAuditorId, jdbcType=VARCHAR},
+            </if>
+            <if test="superAuditorName != null">
+                super_auditor_name = #{superAuditorName, jdbcType=VARCHAR},
+            </if>
+            <if test="superStatus != null">
+                super_status = #{superStatus, jdbcType=TINYINT},
+            </if>
+            update_time = NOW(),
+        </set>
+        WHERE process_id = #{processId,jdbcType=VARCHAR}
+    </update>
+</mapper>

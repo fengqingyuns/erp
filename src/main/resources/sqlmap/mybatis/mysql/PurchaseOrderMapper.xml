@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanyun.scm.api.dao.PurchaseOrderDao">
+    <resultMap id="BaseResultMap" type="com.hanyun.scm.api.domain.PurchaseOrder">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="order_id" property="orderId" jdbcType="VARCHAR"/>
+        <result column="order_document_id" property="orderDocumentId" jdbcType="VARCHAR"/>
+        <result column="plan_id" property="planId" jdbcType="VARCHAR"/>
+        <result column="plan_document_id" property="planDocumentId" jdbcType="VARCHAR"/>
+        <result column="brand_id" property="brandId" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+        <result column="supplier_id" property="supplierId" jdbcType="VARCHAR"/>
+        <result column="supplier_name" property="supplierName" jdbcType="VARCHAR"/>
+        <result column="order_price" property="orderPrice" jdbcType="BIGINT"/>
+        <result column="advance" property="advance" jdbcType="BIGINT"/>
+        <result column="order_status" property="orderStatus" jdbcType="TINYINT"/>
+        <result column="plan_time" property="planTime" jdbcType="TIMESTAMP"/>
+        <result column="operator_id" property="operatorId" jdbcType="VARCHAR"/>
+        <result column="operator_name" property="operatorName" jdbcType="VARCHAR"/>
+        <result column="pay_type" property="payType" jdbcType="TINYINT"/>
+        <result column="total_amount" property="totalAmount" jdbcType="BIGINT"/>
+        <result column="stock_in_amount" property="stockInAmount" jdbcType="BIGINT"/>
+        <result column="total_price" property="totalPrice" jdbcType="BIGINT"/>
+        <result column="distinct_price" property="distinctPrice" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="valid_status" property="validStatus" jdbcType="VARCHAR"/>
+        <result column="store_name" property="storeName" jdbcType="VARCHAR"/>
+        <result column="purchase_user_id" property="purchaseUserId" jdbcType="VARCHAR"/>
+        <result column="purchase_user_name" property="purchaseUserName" jdbcType="VARCHAR"/>
+        <result column="to_warehouse_id" property="toWarehouseId" jdbcType="VARCHAR"/>
+        <result column="to_warehouse_name" property="toWarehouseName" jdbcType="VARCHAR"/>
+        <result column="purchase_status" property="purchaseStatus" jdbcType="TINYINT"/>
+        <result column="auditor_id" property="auditorId" jdbcType="VARCHAR"/>
+        <result column="auditor_name" property="auditorName" jdbcType="VARCHAR"/>
+        <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP"/>
+        <result column="purchase_type" property="purchaseType" jdbcType="TINYINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="complete_stock_in_amount" property="completeStockInAmount" jdbcType="BIGINT"/>
+        <result column="expected_arrival_date" property="expectedArrivalDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, order_id,order_document_id, plan_id,plan_document_id, brand_id, store_id, supplier_id, supplier_name, order_price, advance, order_status, plan_time, operator_id, operator_name, pay_type, total_amount, stock_in_amount, total_price, distinct_price,
+        create_time, update_time,valid_status,store_name,purchase_user_id,purchase_user_name,to_warehouse_id,to_warehouse_name,purchase_status,auditor_id,auditor_name,audit_time,purchase_type,remark,complete_stock_in_amount, expected_arrival_date
+    </sql>
+    <select id="selectByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM purchase_order
+        WHERE order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteOrder" parameterType="java.lang.String">
+        DELETE FROM purchase_order
+        WHERE order_id = #{orderId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insertSelective"
+            parameterType="com.hanyun.scm.api.domain.request.purchase.order.PurchaseOrderCreateRequest">
+        INSERT INTO purchase_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="orderDocumentId != null">
+                order_document_id,
+            </if>
+            <if test="planId != null">
+                plan_id,
+            </if>
+            <if test="planDocumentId != null">
+                plan_document_id,
+            </if>
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="supplierId != null">
+                supplier_id,
+            </if>
+            <if test="supplierName != null">
+                supplier_name,
+            </if>
+            <if test="orderPrice != null">
+                order_price,
+            </if>
+            <if test="advance != null">
+                advance,
+            </if>
+            <if test="orderStatus != null">
+                order_status,
+            </if>
+            <if test="planTime != null">
+                plan_time,
+            </if>
+            <if test="operatorId != null">
+                operator_id,
+            </if>
+            <if test="operatorName != null">
+                operator_name,
+            </if>
+            <if test="payType != null">
+                pay_type,
+            </if>
+            <if test="totalAmount != null">
+                total_amount,
+            </if>
+            <if test="totalPrice != null">
+                total_price,
+            </if>
+            <if test="storeName != null">
+                store_name,
+            </if>
+            <if test="purchaseUserId != null">
+                purchase_user_id,
+            </if>
+            <if test="purchaseUserName != null">
+                purchase_user_name,
+            </if>
+            <if test="toWarehouseId != null">
+                to_warehouse_id,
+            </if>
+            <if test="toWarehouseName != null">
+                to_warehouse_name,
+            </if>
+            <if test="purchaseStatus != null">
+                purchase_status,
+            </if>
+            <if test="auditorId != null">
+                auditor_id,
+            </if>
+            <if test="auditorName != null">
+                auditor_name,
+            </if>
+            <if test="auditTime != null">
+                audit_time,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="purchaseType != null">
+                purchase_type,
+            </if>
+            <if test="expectedArrivalDate != null">
+                expected_arrival_date,
+            </if>
+            distinct_price,
+            complete_stock_in_amount,
+            stock_in_amount,
+            create_time,
+            update_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderDocumentId != null">
+                #{orderDocumentId,jdbcType=VARCHAR},
+            </if>
+            <if test="planId != null">
+                #{planId,jdbcType=VARCHAR},
+            </if>
+            <if test="planDocumentId != null">
+                #{planDocumentId,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierId != null">
+                #{supplierId,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierName != null">
+                #{supplierName,jdbcType=VARCHAR},
+            </if>
+            <if test="orderPrice != null">
+                #{orderPrice,jdbcType=BIGINT},
+            </if>
+            <if test="advance != null">
+                #{advance,jdbcType=BIGINT},
+            </if>
+            <if test="orderStatus != null">
+                #{orderStatus,jdbcType=TINYINT},
+            </if>
+            <if test="planTime != null">
+                #{planTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operatorId != null">
+                #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorName != null">
+                #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="payType != null">
+                #{payType,jdbcType=TINYINT},
+            </if>
+            <if test="totalAmount != null">
+                #{totalAmount,jdbcType=BIGINT},
+            </if>
+            <if test="totalPrice != null">
+                #{totalPrice,jdbcType=BIGINT},
+            </if>
+            <if test="storeName != null">
+                #{storeName,jdbcType=TIMESTAMP},
+            </if>
+            <if test="purchaseUserId != null">
+                #{purchaseUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="purchaseUserName != null">
+                #{purchaseUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="toWarehouseId != null">
+                #{toWarehouseId,jdbcType=VARCHAR},
+            </if>
+            <if test="toWarehouseName != null">
+                #{toWarehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="purchaseStatus != null">
+                #{purchaseStatus,jdbcType=TINYINT},
+            </if>
+            <if test="auditorId != null">
+                #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditTime != null">
+                #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="purchaseType != null">
+                #{purchaseType,jdbcType=TINYINT},
+            </if>
+            <if test="expectedArrivalDate != null">
+                #{expectedArrivalDate, jdbcType=TIMESTAMP},
+            </if>
+            <if test="distinctPrice != null">
+                #{distinctPrice, jdbcType=BIGINT},
+            </if>
+            <if test="distinctPrice == null">
+                null,
+            </if>
+            0,
+            0,
+            NOW(),
+            NOW()
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.hanyun.scm.api.domain.request.purchase.order.PurchaseOrderModifyRequest">
+        UPDATE purchase_order
+        <set>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="planId != null">
+                plan_id = #{planId,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierId != null">
+                supplier_id = #{supplierId,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierName != null">
+                supplier_name = #{supplierName,jdbcType=VARCHAR},
+            </if>
+            <if test="orderPrice != null">
+                order_price = #{orderPrice,jdbcType=BIGINT},
+            </if>
+            <if test="advance != null">
+                advance = #{advance,jdbcType=BIGINT},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus,jdbcType=TINYINT},
+            </if>
+            <if test="planTime != null">
+                plan_time = #{planTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operatorId != null">
+                operator_id = #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorName != null">
+                operator_name = #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="payType != null">
+                pay_type = #{payType,jdbcType=TINYINT},
+            </if>
+            <if test="totalAmount != null">
+                total_amount = #{totalAmount,jdbcType=BIGINT},
+            </if>
+            <if test="stockInAmount != null">
+                stock_in_amount = #{stockInAmount,jdbcType=BIGINT},
+            </if>
+            <if test="totalPrice != null">
+                total_price = #{totalPrice,jdbcType=BIGINT},
+            </if>
+            <if test="distinctPrice != null">
+                distinct_price = #{distinctPrice, jdbcType=BIGINT},
+            </if>
+            <if test="distinctPrice == null">
+                distinct_price = null,
+            </if>
+            <if test="validStatus != null">
+                valid_status = #{validStatus,jdbcType=INTEGER},
+            </if>
+            <if test="storeName != null">
+                store_name = #{storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="purchaseStatus != null">
+                purchase_status = #{purchaseStatus,jdbcType=TINYINT},
+            </if>
+            <if test="purchaseUserId != null">
+                purchase_user_id = #{purchaseUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="purchaseUserName != null">
+                purchase_user_name = #{purchaseUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="toWarehouseId != null">
+                to_warehouse_id = #{toWarehouseId,jdbcType=VARCHAR},
+            </if>
+            <if test="toWarehouseName != null">
+                to_warehouse_name = #{toWarehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorName != null">
+                auditor_name = #{auditorName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditTime != null">
+                audit_time = #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="purchaseType != null">
+                purchase_type = #{purchaseType,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="completeStockInAmount != null">
+                complete_stock_in_amount = #{completeStockInAmount,jdbcType=BIGINT},
+            </if>
+            <if test="expectedArrivalDate != null">
+                expected_arrival_date = #{expectedArrivalDate, jdbcType=TIMESTAMP},
+            </if>
+            update_time = NOW()
+        </set>
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectOrderId" resultMap="BaseResultMap" parameterType="com.hanyun.scm.api.domain.PurchaseOrder">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM purchase_order
+        <where>
+            <if test="orderId != null and orderId !=''">
+                AND order_id LIKE concat('%', #{orderId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="planId != null and planId !=''">
+                AND plan_id = #{planId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null and brandId !=''">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderStatus != null and orderStatus !=''">
+                AND order_status = #{orderStatus,jdbcType=TINYINT}
+            </if>
+            <if test="supplierId != null">
+                AND supplier_id = #{supplierId,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime != null">
+                AND create_time &gt;= #{startTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime != null">
+                AND create_time &lt;= #{endTime,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <select id="countAllForPurchaseReturn"
+            parameterType="com.hanyun.scm.api.domain.request.purchase.order.PurchaseOrderQueryRequest"
+            resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM purchase_order
+        <where>
+            <if test="orderId != null and orderId !=''">
+                AND order_id LIKE concat(#{orderId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="orderDocumentId != null">
+                AND order_document_id LIKE concat(#{orderDocumentId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="planId != null and planId !=''">
+                AND plan_id = #{planId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null and brandId !=''">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="planBeginTime != null and planBeginTime !=''">
+                AND plan_time <![CDATA[>=]]> #{planBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="planEndTime != null and planEndTime !=''">
+                AND plan_time <![CDATA[<=]]> #{planEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="stockInStatus != null">
+                AND total_amount <![CDATA[>]]> stock_in_amount
+            </if>
+            AND order_status <![CDATA[>=]]> 1
+            AND order_status <![CDATA[<=]]> 3
+        </where>
+    </select>
+    <select id="queryForPurchaseReturn" resultMap="BaseResultMap"
+            parameterType="com.hanyun.scm.api.domain.request.purchase.order.PurchaseOrderQueryRequest">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM purchase_order
+        <where>
+            <if test="orderId != null">
+                AND order_id LIKE concat(#{orderId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="orderDocumentId != null">
+                AND order_document_id LIKE concat(#{orderDocumentId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="planId != null">
+                AND plan_id = #{planId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="supplierId != null">
+                AND supplier_id = #{supplierId,jdbcType=VARCHAR}
+            </if>
+            <if test="supplierName != null">
+                AND supplier_name = #{supplierName,jdbcType=VARCHAR}
+            </if>
+            <if test="orderPrice != null">
+                AND order_price = #{orderPrice,jdbcType=BIGINT}
+            </if>
+            <if test="advance != null">
+                AND advance = #{advance,jdbcType=BIGINT}
+            </if>
+            <if test="planBeginTime != null">
+                AND plan_time <![CDATA[>=]]> #{planBeginTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="planEndTime != null">
+                AND plan_time <![CDATA[<=]]> #{planEndTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="operatorId != null">
+                AND operator_id = #{operatorId,jdbcType=VARCHAR}
+            </if>
+            <if test="operatorName != null">
+                AND operator_name = #{operatorName,jdbcType=VARCHAR}
+            </if>
+            <if test="payType != null">
+                AND pay_type = #{payType,jdbcType=TINYINT}
+            </if>
+            <if test="totalAmount != null">
+                AND total_amount = #{totalAmount,jdbcType=BIGINT}
+            </if>
+            <if test="totalPrice != null">
+                AND total_price = #{totalPrice,jdbcType=BIGINT}
+            </if>
+            <if test="storeName != null">
+                AND store_name = #{storeName,jdbcType=VARCHAR}
+            </if>
+            <if test="stockInStatus != null">
+                AND total_amount <![CDATA[>]]> stock_in_amount
+            </if>
+            AND order_status <![CDATA[>=]]> 1
+            AND order_status <![CDATA[<=]]> 3
+        </where>
+        order by id desc
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="countAll" parameterType="com.hanyun.scm.api.domain.request.purchase.order.PurchaseOrderQueryRequest"
+            resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM purchase_order
+        <where>
+            <if test="orderId != null and orderId !=''">
+                AND order_id LIKE concat(#{orderId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="orderDocumentId != null and orderDocumentId !=''">
+                AND order_document_id LIKE concat(#{orderDocumentId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="planId != null and planId !=''">
+                AND plan_id = #{planId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null and brandId !=''">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderStatus != null">
+                AND order_status = #{orderStatus,jdbcType=TINYINT}
+            </if>
+            <if test="startTime != null and startTime !=''">
+                AND update_time <![CDATA[>=]]> #{startTime, jdbcType=VARCHAR}
+            </if>
+            <if test="endTime != null and endTime !=''">
+                AND update_time <![CDATA[<=]]> #{endTime, jdbcType=VARCHAR}
+            </if>
+            <if test="planBeginTime != null and planBeginTime !=''">
+                AND plan_time <![CDATA[>=]]> #{planBeginTime, jdbcType=VARCHAR}
+            </if>
+            <if test="planEndTime != null and planEndTime !=''">
+                AND plan_time <![CDATA[<=]]> #{planEndTime, jdbcType=VARCHAR}
+            </if>
+            <if test="purchaseUserId != null">
+                AND purchase_user_id = #{purchaseUserId, jdbcType=VARCHAR}
+            </if>
+            <if test="purchaseUserName != null">
+                AND purchase_user_name LIKE concat(#{purchaseUserName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="supplierId!=null">
+                AND supplier_id = #{supplierId,jdbcType=VARCHAR}
+            </if>
+            <if test="toWarehouseId != null and toWarehouseId !=''">
+                AND to_warehouse_id = #{toWarehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="purchaseStatus != null and purchaseStatus != ''">
+                AND purchase_status = #{purchaseStatus,jdbcType=TINYINT}
+            </if>
+            <if test="stockInStatus != null">
+                AND total_amount <![CDATA[>]]> stock_in_amount
+            </if>
+        </where>
+    </select>
+
+    <select id="select" resultMap="BaseResultMap"
+            parameterType="com.hanyun.scm.api.domain.request.purchase.order.PurchaseOrderQueryRequest">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM purchase_order
+        <where>
+            <if test="orderId != null and orderId !=''">
+                AND order_id LIKE concat(#{orderId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="orderDocumentId != null and orderDocumentId !=''">
+                AND order_document_id LIKE concat(#{orderDocumentId,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="planId != null and planId !=''">
+                AND plan_id = #{planId,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null and brandId !=''">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderStatus != null">
+                AND order_status = #{orderStatus,jdbcType=TINYINT}
+            </if>
+            <if test="startTime != null and startTime !=''">
+                AND update_time <![CDATA[>=]]> #{startTime, jdbcType=VARCHAR}
+            </if>
+            <if test="endTime != null and endTime !=''">
+                AND update_time <![CDATA[<=]]> #{endTime, jdbcType=VARCHAR}
+            </if>
+            <if test="planBeginTime != null and planBeginTime !=''">
+                AND plan_time <![CDATA[>=]]> #{planBeginTime, jdbcType=VARCHAR}
+            </if>
+            <if test="planEndTime != null and planEndTime !=''">
+                AND plan_time <![CDATA[<=]]> #{planEndTime, jdbcType=VARCHAR}
+            </if>
+            <if test="purchaseUserId != null">
+                AND purchase_user_id = #{purchaseUserId, jdbcType=VARCHAR}
+            </if>
+            <if test="purchaseUserName != null">
+                AND purchase_user_name LIKE concat(#{purchaseUserName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="supplierId != null">
+                AND supplier_id = #{supplierId,jdbcType=VARCHAR}
+            </if>
+            <if test="toWarehouseId != null and toWarehouseId !=''">
+                AND to_warehouse_id = #{toWarehouseId,jdbcType=VARCHAR}
+            </if>
+            <if test="purchaseStatus != null and purchaseStatus != ''">
+                AND purchase_status = #{purchaseStatus,jdbcType=TINYINT}
+            </if>
+            <if test="stockInStatus != null">
+                AND total_amount <![CDATA[>]]> stock_in_amount
+            </if>
+            <if test="orderIds != null">
+                AND order_id IN (NULL
+                <foreach collection="orderIds" item="purchaseOrderId">
+                    , #{purchaseOrderId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+        </where>
+        order by id desc
+        <if test="pageSize != null and pageSize > 0">
+            LIMIT #{recordNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="queryForPurchaseStockIn" resultMap="BaseResultMap"
+            parameterType="com.hanyun.scm.api.domain.request.purchase.order.PurchaseOrderQueryRequest">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM purchase_order
+        <where>
+            order_status <![CDATA[>=]]> 1
+            <if test="brandId != null and brandId !=''">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderIds != null">
+                AND order_id IN (NULL
+                <foreach collection="orderIds" item="purchaseOrderId">
+                    , #{purchaseOrderId, jdbcType=VARCHAR}
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
+    <select id="selectOrderIds" parameterType="com.hanyun.scm.api.domain.request.purchase.order.PurchaseOrderQueryRequest" resultType="java.lang.String">
+        SELECT order_id FROM purchase_order
+        <where>
+            <if test="brandId != null and brandId !=''">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime != null and startTime !=''">
+                AND create_time <![CDATA[>=]]> #{startTime, jdbcType=VARCHAR}
+            </if>
+            <if test="endTime != null and endTime !=''">
+                AND create_time <![CDATA[<=]]> #{endTime, jdbcType=VARCHAR}
+            </if>
+            AND order_status <![CDATA[>=]]> 1
+            AND order_status <![CDATA[<=]]> 3
+        </where>
+    </select>
+    <select id="selectOrderIdsForStockIn" parameterType="com.hanyun.scm.api.domain.request.purchase.order.PurchaseOrderQueryRequest" resultType="java.lang.String">
+        SELECT order_id FROM purchase_order
+        <where>
+            <if test="brandId != null and brandId !=''">
+                AND brand_id = #{brandId,jdbcType=VARCHAR}
+            </if>
+            <if test="storeId != null and storeId !=''">
+                AND store_id = #{storeId,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime != null and startTime !=''">
+                AND create_time <![CDATA[>=]]> #{startTime, jdbcType=VARCHAR}
+            </if>
+            <if test="endTime != null and endTime !=''">
+                AND create_time <![CDATA[<=]]> #{endTime, jdbcType=VARCHAR}
+            </if>
+            AND order_status <![CDATA[>=]]> 1
+            AND order_status <![CDATA[<]]> 3
+        </where>
+    </select>
+</mapper>
